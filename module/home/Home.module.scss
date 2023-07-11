@@ -1,0 +1,24 @@
+.homepage{
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel{
+    position: relative;
+    
+}
+
+.border-top{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.border-bottom{
+    position: absolute;
+    bottom: 0;
+    transform: translateY(5px);
+    z-index: 1;
+    overflow: hidden;
+}
