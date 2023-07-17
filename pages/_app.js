@@ -1,9 +1,9 @@
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import Layout from "../module/layout/layout.tsx";
 function MyApp({ Component, pageProps }) {
   return (
     <Layout>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </Layout>
   );
 }

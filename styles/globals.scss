@@ -2,6 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
 
 
+:root {
+  --primary: #FBBCC0;
+  --secondary: #abe9b0;
+  --textColor: #5a5a5a;
+  --descriptionTextColor: #9c9c9c;
+
+}
+
 html,
 body {
   padding: 0;
@@ -16,6 +24,11 @@ a {
 
 * {
   box-sizing: border-box;
+ 
+}
+
+.ant-row, .ant-col, .ant-btn, .ant-collapse-header-text, .ant-collapse-content, .ant-table{
+  font-family: 'Quicksand' !important;
 }
 
 @media (prefers-color-scheme: dark) {

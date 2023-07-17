@@ -12,7 +12,7 @@ function Header() {
             <Row className={cx("header-wrap")}>
                 <Col  span={10} className={cx("left")}>
                     <li className={cx("menu-item", "logo")}>
-                        <Image src={require("../../assets/imgs/Fooce.png")} width={100}/>
+                        <Image src={require("../../assets/imgs/Fooce.png")} width={100} alt="logo" />
                     </li>
                     <li className={cx("menu-item")} >
                         <a className={cx("menu-item-link")} tabIndex= "0">
@@ -36,7 +36,7 @@ function Header() {
                     </li>
                     <li className={cx("menu-item")}>
                         <a className={cx("menu-item-link")} tabIndex = "0">
-                            Blog
+                            About us
                         </a>
                     </li>
                 </Col>
