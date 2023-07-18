@@ -9,11 +9,10 @@ import ButtonCustom from '../../components/Button'
 
 
 const cx = classNames.bind(style)
-export default function Login() {
+function Login() {
     const onChange = (key:string) => {
        
     }
-
     const emailRules = [
         {
           type: 'email',
@@ -34,6 +33,129 @@ export default function Login() {
         message: 'Please input your phone number',
     },
     ];
+    const items: TabsProps['items'] = [
+        {
+          key: '1',
+          label: (<span className={cx("tab-header")}>Login</span>),
+          children: (
+            <Form
+                        name="basic"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        style={{ maxWidth: 600 }}
+                        initialValues={{ remember: true }}
+                        layout="vertical"
+                        autoComplete="off"
+                        className={cx("form")}
+                    >
+                        <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={cx("form-label")}
+                        >
+                        <Input className={cx("form-input")}/>
+                        </Form.Item>
+
+                        <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        wrapperCol={{ span: 24 }}
+                        className={cx("form-label")}
+                        >
+                        <Input.Password className={cx("form-input")}/>
+                        </Form.Item>
+
+                        <Form.Item name="remember" valuePropName="checked" wrapperCol={{ span: 24 }} >
+                        <Checkbox >Remember me</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item wrapperCol={{ span: 24 }}>
+                        <ButtonCustom name="Login" htmlType="submit" />
+                        </Form.Item>
+                    </Form>
+          ),
+        },
+        {
+          key: '2',
+          label: (<span className={cx("tab-header")}>Signup</span>),
+          children:( <Form
+            name="basic"
+            layout= "vertical"
+        
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+        
+            initialValues={{ remember: true }}
+            
+            autoComplete="off"
+            className={cx("form")}
+        >
+            <Form.Item
+                label="Email"
+                name="email"
+                rules={emailRules}
+                className={cx("form-label")}
+                wrapperCol={{ span: 24 }}
+            >
+            <Input className={cx("form-input")}/>
+            </Form.Item>
+            <br />
+            <Form.Item
+                label="Phone"
+                name="Phone"
+                rules={phoneRules}
+                className={cx("form-label")}
+                wrapperCol={{ span: 24 }}
+            >
+            <Input className={cx("form-input")}/>
+            </Form.Item>
+            <br />
+            <Form.Item
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: 'Please input your password!' }]}
+                wrapperCol={{ span: 24 }}
+                className={cx("form-label")}
+                >
+                <Input.Password className={cx("form-input")}/>
+            </Form.Item>
+            <br />
+            <Form.Item
+                name="confirm"
+                label="Confirm Password"
+                dependencies={['password']}
+                wrapperCol={{ span: 24 }}
+                hasFeedback
+                rules={[
+                {
+                    required: true,
+                    message: 'Please confirm your password!',
+                },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The new password that you entered do not match!'));
+                    },
+                }),
+                ]}
+            >
+                <Input.Password className={cx("form-input")}/>
+            </Form.Item>
+            
+
+            <Form.Item wrapperCol={{ span: 24 }}>
+                <ButtonCustom name= "place order" htmlType="submit" />
+            </Form.Item>
+        </Form>),
+        }
+      ];
+
+    
   return (
     <>
          <Head >
@@ -50,8 +172,9 @@ export default function Login() {
                 size="small"
                 className={cx("tabs")}
                 // style={{ backgroundColor: 'transparent', padding: '16px' }}
+                items={items}
             >
-                <TabPane
+                {/* <TabPane
                     tab={<span className={cx("tab-header")}>Login</span>}
                     key="1"
                 >
@@ -113,7 +236,7 @@ export default function Login() {
                         <Form.Item
                             label="Email"
                             name="email"
-                            // rules={emailRules}
+                            rules={emailRules}
                             className={cx("form-label")}
                             wrapperCol={{ span: 24 }}
                         >
@@ -169,9 +292,11 @@ export default function Login() {
                             <ButtonCustom name= "place order" htmlType="submit" />
                         </Form.Item>
                     </Form>
-                </TabPane>
+                </TabPane> */}
             </Tabs>
         </div>
     </>
   )
 }
+
+export default Login

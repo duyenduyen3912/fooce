@@ -3,11 +3,98 @@ import React from 'react'
 import style from './Checkout.module.scss'
 import classNames from 'classnames/bind'
 import PageTitle from '../../components/PageTitle'
-import { Checkbox, Form, Input } from 'antd'
+import { Cascader, Checkbox, Form, Input } from 'antd'
 import ButtonCustom from '../../components/Button'
 
 
 const cx = classNames.bind(style)
+
+interface Option {
+  value: string | number;
+  label: string;
+  children?: Option[];
+}
+
+const options: Option[] = [
+  {
+    value: 'HaNoi',
+    label: 'Hà Nội',
+    children: [
+      {
+        value: 'HoanKiemDistrict',
+        label: 'Quận Hoàn Kiếm',
+        children: [
+          {
+            value: 'ChuongDuongWard',
+            label: 'Chương Dương',
+          },
+          {
+            value: 'CuaDongWard',
+            label: 'Cửa Đông',
+          },
+          {
+            value: 'HangDaoWard',
+            label: 'Hàng Đào',
+          },
+          {
+            value: 'LyThaiToWard',
+            label: 'Lý Thái Tổ',
+          },
+        ],
+      },
+      {
+        value: 'BaDinhDistrict',
+        label: 'Quận Ba Đình',
+        children: [
+          {
+            value: 'DienBienWard',
+            label: 'Điện Biên',
+          },
+          {
+            value: 'DoiCanWard',
+            label: 'Đội Cấn',
+          },
+          {
+            value: 'KimMaWard',
+            label: 'Kim Mã',
+          },
+          {
+            value: 'QuanThanhWard',
+            label: 'Quán Thánh',
+          },
+        ],
+      },
+      {
+        value: 'DongAnhDistrict',
+        label: 'Huyện Đông Anh',
+        children: [
+          {
+            value: 'BacHongWard',
+            label: 'Bắc Hồng',
+          },
+          {
+            value: 'TTDongAnhWard',
+            label: 'Thị Trấn Đông Anh',
+          },
+          {
+            value: 'CoLoaWard',
+            label: 'Cổ Loa',
+          },
+          {
+            value: 'KimChungWard',
+            label: 'Kim Chung',
+          },
+        ],
+      },
+      
+    ],
+  },
+ 
+];
+    const onChange = (value: string[]) => {
+      console.log(value)
+    }
+
 export default function Checkout() {
     const onFinish = (values: any) => {
         console.log('Success:', values);
@@ -17,6 +104,9 @@ export default function Checkout() {
         console.log('Failed:', errorInfo);
       };
 
+      const onChange = (value: string[]) => {
+        console.log(value)
+      }
       const emailRules = [
         {
           type: 'email',
@@ -37,6 +127,7 @@ export default function Checkout() {
           message: 'Please input your phone number',
         },
       ];
+      
   return (
     <>
         <Head >
@@ -91,10 +182,16 @@ export default function Checkout() {
                     <Input className={cx("form-input")}/>
                     </Form.Item>
                     <br />
-                    <Form.Item name="remember" valuePropName="checked" wrapperCol={{ span: 24}}>
-                    <Checkbox >Remember me</Checkbox>
+                    <Form.Item
+                        label="Address"
+                        name="Address"
+                        rules={[{ required: true, message: 'Please input your address!' }]}
+                        className={cx("form-label")}
+                        wrapperCol={{ span: 24 }}
+                    >
+                    
+                      <Cascader options={options} onChange={onChange}  placeholder="Please select your address"/>
                     </Form.Item>
-
                     <Form.Item wrapperCol={{ span: 24 }}>
                         <ButtonCustom name= "place order" htmlType="submit" />
                     </Form.Item>
