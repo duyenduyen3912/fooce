@@ -7,7 +7,7 @@ const cx = classNames.bind(style);
 export default function ButtonCustom(props) {
   return (
     <>
-      <Button className={cx("order-btn")}>{props.name}</Button>
+      <Button className={cx("order-btn")} htmlType={props.htmlType}>{props.name}</Button>
     </>
   );
 }

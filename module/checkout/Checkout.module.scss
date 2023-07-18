@@ -1,0 +1,38 @@
+.checkout{
+    padding: 80px 18.333%;
+    text-align: center;
+    .checkout-title{
+        font-size: 30px;
+        font-weight: 500;
+        color: var(--textColor);
+
+    }
+    .checkout-form{
+        display: flex;
+        justify-content: center;
+        
+        .form {
+           max-width: 600px;
+            flex: 1;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        
+        .form-label {
+            
+            font-size: 17px;
+            color: var(--textColor);
+        }
+
+        .form-input{
+     
+            padding: 14px 18px;
+            color: var(--textColor);
+            border-color: #e9e9e9;
+            
+            
+        }
+    }
+    }
+    
+    
+}
