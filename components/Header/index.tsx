@@ -3,6 +3,7 @@ import { Col, Menu, Row } from "antd";
 import style from "./Header.module.scss"
 import classNames from "classnames/bind";
 import Image from "next/image";
+import Link from "next/link";
 
 const cx = classNames.bind(style)
 
@@ -15,14 +16,14 @@ function Header() {
                         <Image src={require("../../assets/imgs/Fooce.png")} width={100} alt="logo" />
                     </li>
                     <li className={cx("menu-item")} >
-                        <a className={cx("menu-item-link")} tabIndex= "0">
+                        <Link href={"/"} className={cx("menu-item-link")} tabIndex= "0">
                             Home
-                        </a>
+                        </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <a className={cx("menu-item-link")} tabIndex= "0">
+                        <Link href={"/our-menu"} className={cx("menu-item-link")} tabIndex= "0">
                             Menu
-                        </a>
+                        </Link>
                     </li>
                     <li className={cx("menu-item")}>
                         <a className={cx("menu-item-link")} tabIndex = "0">
@@ -35,9 +36,9 @@ function Header() {
                         </a>
                     </li>
                     <li className={cx("menu-item")}>
-                        <a className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/about-us"} className={cx("menu-item-link")} tabIndex = "0">
                             About us
-                        </a>
+                        </Link>
                     </li>
                 </Col>
                 <Col  span={7} className={cx("right")}>
@@ -48,11 +49,15 @@ function Header() {
                     </div>
                 </li>
                 <li className={cx("menu-item", "icon")}>
+                    <Link href={"/cart"}>
                     
-                    <ShoppingCartOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                        <ShoppingCartOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                    </Link>
                 </li>
                 <li className={cx("menu-item", "icon")}>
-                    <UserOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                    <Link href={"/my-account"}>
+                        <UserOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                    </Link>
                 </li>
                 </Col>
             </Row>

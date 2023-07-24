@@ -159,7 +159,6 @@ function Homepage() {
         <div className={cx("favourite-menu")}>
             <MenuType bg={image.menuBg} menuType="Favourite"/>
             <Image src={require("../../assets/imgs/pink-straw.png")} alt="pink-straw" className={cx("pink-straw")}/>
-
             <Image src={require("../../assets/imgs/blueberry.png")} alt="pink-straw" className={cx("blueberry")}/>
         </div>
            

@@ -1,132 +1,62 @@
 import Head from 'next/head'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import style from './Checkout.module.scss'
 import classNames from 'classnames/bind'
 import PageTitle from '../../components/PageTitle'
-import { Cascader, Checkbox, Form, Input } from 'antd'
+import {Form, Input, Select, Space } from 'antd'
 import ButtonCustom from '../../components/Button'
+import formRules from '../../constant/formRules'
+import axios from 'axios'
 
 
 const cx = classNames.bind(style)
+export default function Checkout() {
+  const [data, setData] = useState([]);
+  const districtData = data.map((item) => {
+    return item.name;
+  })
 
-interface Option {
-  value: string | number;
-  label: string;
-  children?: Option[];
-}
+  const wardData = data.reduce((acc, item, index) => {
+    acc[item.name] = item.wards.map((ward) => ward.name);
+    return acc;
+  }, {});
 
-const options: Option[] = [
-  {
-    value: 'HaNoi',
-    label: 'Hà Nội',
-    children: [
-      {
-        value: 'HoanKiemDistrict',
-        label: 'Quận Hoàn Kiếm',
-        children: [
-          {
-            value: 'ChuongDuongWard',
-            label: 'Chương Dương',
-          },
-          {
-            value: 'CuaDongWard',
-            label: 'Cửa Đông',
-          },
-          {
-            value: 'HangDaoWard',
-            label: 'Hàng Đào',
-          },
-          {
-            value: 'LyThaiToWard',
-            label: 'Lý Thái Tổ',
-          },
-        ],
-      },
-      {
-        value: 'BaDinhDistrict',
-        label: 'Quận Ba Đình',
-        children: [
-          {
-            value: 'DienBienWard',
-            label: 'Điện Biên',
-          },
-          {
-            value: 'DoiCanWard',
-            label: 'Đội Cấn',
-          },
-          {
-            value: 'KimMaWard',
-            label: 'Kim Mã',
-          },
-          {
-            value: 'QuanThanhWard',
-            label: 'Quán Thánh',
-          },
-        ],
-      },
-      {
-        value: 'DongAnhDistrict',
-        label: 'Huyện Đông Anh',
-        children: [
-          {
-            value: 'BacHongWard',
-            label: 'Bắc Hồng',
-          },
-          {
-            value: 'TTDongAnhWard',
-            label: 'Thị Trấn Đông Anh',
-          },
-          {
-            value: 'CoLoaWard',
-            label: 'Cổ Loa',
-          },
-          {
-            value: 'KimChungWard',
-            label: 'Kim Chung',
-          },
-        ],
-      },
-      
-    ],
-  },
- 
-];
+  type WardName = keyof typeof wardData;
+
+  const [wards, setWards] = useState(wardData[districtData[0] as WardName]);
+  const [secondWard, setSecondWard] = useState(wardData[districtData[0] as WardName]);
+
+
+  const handleProvinceChange = (value: WardName) => {
+    setWards(wardData[value]);
+    setSecondWard(wardData[value][0]);
+  };
+
+  const onSecondCityChange = (value: WardName) => {
+    setSecondWard(value);
+  };
+  
+
+  const onFinish = (values: any) => {
+      console.log('Success:', values);
+    };
+    
+    const onFinishFailed = (errorInfo: any) => {
+      console.log('Failed:', errorInfo);
+    };
+
     const onChange = (value: string[]) => {
       console.log(value)
     }
-
-export default function Checkout() {
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-      };
-      
-      const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-      };
-
-      const onChange = (value: string[]) => {
-        console.log(value)
-      }
-      const emailRules = [
-        {
-          type: 'email',
-          message: 'Email address is not valid',
-        },
-        {
-          required: true,
-          message: 'Please input your email address!',
-        },
-      ];
-      const phoneRules = [
-        {
-          pattern: /^[0-9]{10}$/,
-          message: 'Invalid phone number. Please enter 10 digits',
-        },
-        {
-          required: true,
-          message: 'Please input your phone number',
-        },
-      ];
+    useEffect(()=>{
+      axios.get("https://provinces.open-api.vn/api/?depth=3").then((response) => response.data[0].districts)
+      .then((districts) => {
+        setData(districts); 
+      })
+      .catch((error) => {
+        console.error('Error fetching districts: ', error);
+      });
+    },[])  
       
   return (
     <>
@@ -165,7 +95,7 @@ export default function Checkout() {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={emailRules}
+                        rules={formRules.emailRules}
                         className={cx("form-label")}
                         wrapperCol={{ span: 24 }}
                     >
@@ -175,7 +105,7 @@ export default function Checkout() {
                     <Form.Item
                         label="Phone"
                         name="Phone"
-                        rules={phoneRules}
+                        rules={formRules.phoneRules}
                         className={cx("form-label")}
                         wrapperCol={{ span: 24 }}
                     >
@@ -183,14 +113,30 @@ export default function Checkout() {
                     </Form.Item>
                     <br />
                     <Form.Item
-                        label="Address"
+                        label="Address (Ha Noi city only)"
                         name="Address"
                         rules={[{ required: true, message: 'Please input your address!' }]}
                         className={cx("form-label")}
                         wrapperCol={{ span: 24 }}
                     >
-                    
-                      <Cascader options={options} onChange={onChange}  placeholder="Please select your address"/>
+                       <Space 
+                       className={cx("form-space")}
+                       wrap>
+                          <Select
+                            defaultValue={districtData[0]}
+                            style={{ minWidth: 200 }}
+                            onChange={handleProvinceChange}
+                            options={districtData.map((province) => ({ label: province, value: province }))}
+                            
+                          />
+                          <Select
+                          
+                            style={{ minWidth: 200 }}
+                            value={secondWard}
+                            onChange={onSecondCityChange}
+                            options={wards ? wards.map((ward) => ({ label: ward, value: ward })) : []}
+                          />
+                        </Space>
                     </Form.Item>
                     <Form.Item wrapperCol={{ span: 24 }}>
                         <ButtonCustom name= "place order" htmlType="submit" />

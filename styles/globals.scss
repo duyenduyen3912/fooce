@@ -27,8 +27,16 @@ a {
  
 }
 
-.ant-row, .ant-col, .ant-btn, .ant-collapse-header-text, .ant-collapse-content, .ant-table, .ant-tabs-tab-btn{
+.ant-row, .ant-col, .ant-btn, .ant-collapse-header-text, .ant-collapse-content, .ant-table, .ant-tabs-tab-btn, .ant-tabs, .ant-carousel{
   font-family: 'Quicksand' !important;
+}
+
+.slick-dots li button {
+  background-color: #b1abac !important; 
+}
+
+.slick-dots li.slick-active button {
+  background-color: #abe9b0 !important; 
 }
 
 

@@ -149,7 +149,7 @@ function Login() {
             
 
             <Form.Item wrapperCol={{ span: 24 }}>
-                <ButtonCustom name= "place order" htmlType="submit" />
+                <ButtonCustom name= "Signup" htmlType="submit" />
             </Form.Item>
         </Form>),
         }
