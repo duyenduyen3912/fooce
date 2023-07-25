@@ -26,14 +26,14 @@ function Header() {
                         </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <a className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/food"} className={cx("menu-item-link")} tabIndex = "0">
                             Food
-                        </a>
+                        </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <a className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/juice"} className={cx("menu-item-link")} tabIndex = "0">
                             Juice
-                        </a>
+                        </Link>
                     </li>
                     <li className={cx("menu-item")}>
                         <Link href={"/about-us"} className={cx("menu-item-link")} tabIndex = "0">
@@ -57,6 +57,11 @@ function Header() {
                 <li className={cx("menu-item", "icon")}>
                     <Link href={"/my-account"}>
                         <UserOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                    </Link>
+                </li>
+                <li className={cx("menu-item", "icon")}>
+                    <Link href={""} className={cx("menu-item-link")} tabIndex = "0">
+                            Admin
                     </Link>
                 </li>
                 </Col>

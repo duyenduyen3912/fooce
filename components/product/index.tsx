@@ -9,7 +9,7 @@ import { DollarOutlined } from '@ant-design/icons'
 const cx = classNames.bind(style)
 export default function Product(props) {
   return (
-    <Col span={6} className="gutter-row" xs={24}  sm={12} md= {8} lg={6}>
+    <Col span = {props.col} className="gutter-row" xs={24}  sm={12} md= {8} lg={props.col}>
         <div className={cx("product")}>
             <div className={cx("img-wrap")}>
             <Image src={require(`../../assets/imgs/${props.name}.png`)} alt="juice" className={cx("img")}/>

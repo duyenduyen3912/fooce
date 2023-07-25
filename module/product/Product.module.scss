@@ -1,0 +1,68 @@
+.product{
+    padding: 71px 18.33333%;
+    
+
+    .sort{
+        display: flex;
+        justify-content: space-between;
+        .product-number{
+            font-size: 16px;
+            color: var(--textColor);
+            font-weight: 500;
+        }
+    }
+
+    .filter-price{
+        font-size: 20px;
+        color: var(--textColor);
+        font-weight: 500;
+        margin-bottom: 13px;
+    }
+
+    .price-range-wrap{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        .price-range{
+            font-size: 16px;
+            font-weight: 500;
+            color: #5a5a5a;
+        }
+        .btn{
+            padding: 3px 31px;
+            background-color: var(--secondary);
+            border-color: transparent;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            &:hover{
+                color: #fff;
+                border-color: transparent;
+                background-color: var(--primary);
+            }
+        }
+    }
+
+    .product-category{
+        margin-top: 30px;
+        .category-item{
+            cursor: pointer;
+            color: var(--descriptionTextColor);
+            font-size: 15px;
+            margin: 10px 0;
+            &:hover {
+                color: var(--textColor);
+            }
+        }
+    }
+
+    .product-search{
+        margin-top: 30px;
+        .search-input{
+            border: 2px dotted var(--secondary);
+            padding: 10px;
+        }
+    }
+    
+}

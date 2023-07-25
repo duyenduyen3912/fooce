@@ -120,14 +120,14 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
-                        <Product name = {"juice"}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
+                        <Product name = {"juice"} col={6}/>
                 </Row>
                 </div>
             </div>
@@ -143,14 +143,14 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
-                        <Product name = {"pasta"}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
+                        <Product name = {"pasta"} col={6}/>
                 </Row>
                 </div>
             </div>
