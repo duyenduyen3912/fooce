@@ -31,6 +31,25 @@ a {
   font-family: 'Quicksand' !important;
 }
 
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+
+    color: var(--primary);
+  
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active::after{
+  border-color: var(--primary);
+}
+
+.ant-tabs .ant-tabs-tab:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.ant-tabs .ant-tabs-ink-bar {
+  background: var(--primary);
+}
+
 .slick-dots li button {
   background-color: #b1abac !important; 
 }

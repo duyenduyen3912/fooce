@@ -108,9 +108,7 @@ export default function Food() {
                     <div className={cx('category-item')}>
                         Rice Noodle
                     </div>
-                    <div className={cx('category-item')}>
-                        Ice Cream
-                    </div>
+                   
                     <div className={cx('category-item')}>
                         Rice bowl
                     </div>

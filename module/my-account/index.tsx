@@ -204,7 +204,7 @@ export default function Account() {
                     <Form.Item wrapperCol={{ span: 24 }}>
                         <ButtonCustom name= "save change" htmlType="submit" />
                     </Form.Item>
-                </Form>
+                    </Form>
                 </>
             )
         },

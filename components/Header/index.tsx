@@ -40,6 +40,11 @@ function Header() {
                             About us
                         </Link>
                     </li>
+                    <li className={cx("menu-item", "icon")}>
+                        <Link href={"/admin"} className={cx("menu-item-link")} tabIndex = "0">
+                                Admin
+                        </Link>
+                    </li>
                 </Col>
                 <Col  span={7} className={cx("right")}>
                 <li className={cx("menu-item")}>
@@ -59,11 +64,7 @@ function Header() {
                         <UserOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
                     </Link>
                 </li>
-                <li className={cx("menu-item", "icon")}>
-                    <Link href={""} className={cx("menu-item-link")} tabIndex = "0">
-                            Admin
-                    </Link>
-                </li>
+                
                 </Col>
             </Row>
             
