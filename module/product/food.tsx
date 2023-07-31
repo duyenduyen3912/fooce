@@ -6,9 +6,9 @@ import classNames from 'classnames/bind'
 import style from "./Product.module.scss"
 import Product from '../../components/product'
 import { DollarCircleOutlined, SearchOutlined } from '@ant-design/icons'
-import Search from 'antd/es/input/Search'
-
-
+import {useQuery} from 'react-query'
+import { getProductList } from '../../api/ApiProduct'
+import config from '../../config'
 
 const cx = classNames.bind(style)
 export default function Food() {
@@ -20,6 +20,10 @@ export default function Food() {
   const onChange = (newValue: number) => {
     setInputValue(newValue);
   }
+
+  const {isLoading, isError, isFetching, data, error} = useQuery(['FoodList'], getProductList);
+  console.log(data)
+  console.log(config.NETWORK_CONFIG.API_DOMAIN)
   return (
     <>
          <Head >

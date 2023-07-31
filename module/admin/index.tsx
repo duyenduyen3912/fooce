@@ -139,11 +139,11 @@ const columns_product: ColumnsType<DataType_Product> = [
       filters: [
         {
           text: 'Food',
-          value: 'food',
+          value: 'Food',
         },
         {
           text: 'Juice',
-          value: 'juice',
+          value: 'Juice',
         },
       ],
       onFilter: (value: string, record) => record.tag.indexOf(value) === 0,
@@ -214,11 +214,13 @@ const columns_product: ColumnsType<DataType_Product> = [
         
         render: (_, record) => {
             return (
-                <>
+                <div style={{textAlign: 'center'}}>
                     <ButtonCustom name="view" />
-                    <ButtonCustom name="update" />
+                    <br />
                     <ButtonCustom name="delete" />
-                </>
+                    <br />
+                    <ButtonCustom name="update" />
+                </div>
                 
             )
         }
@@ -226,26 +228,26 @@ const columns_product: ColumnsType<DataType_Product> = [
   ];
 
 
-  const data_product = [
-    {
-      key: '1',
-      name: 'Smoothie',
-      price: 32000,
-      tag: 'Juice',
-      category: 'shakes'
+const data_product = [
+  {
+    key: '1',
+    name: 'Smoothie',
+    price: 32000,
+    tag: 'Juice',
+    category: 'shakes'
+  },
+  {
+      key: '2',
+      name: 'Pasta',
+      price: 330000,
+      tag: 'Food',
+      category: 'pasta'
     },
-    {
-        key: '2',
-        name: 'Pasta',
-        price: 330000,
-        tag: 'Food',
-        category: 'pasta'
-      },
-  ];
-  
-  const onChange: TableProps<DataType_Product>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-  };
+];
+
+const onChange: TableProps<DataType_Product>['onChange'] = (pagination, filters, sorter, extra) => {
+  console.log('params', pagination, filters, sorter, extra);
+};
   
 
 export default function Admin() {
@@ -282,8 +284,11 @@ export default function Admin() {
             label: (<span className={cx("tab-header")}>Dashboard</span>),
             children: (
                 <>
-                    <Row gutter={16}>
-                        <TotalMoney name="Tổng tiền tháng 2" totalMoney='2000000'/>
+                    <Row gutter={16} style={{marginBottom: '40px'}}>
+                        <TotalMoney name="Tổng tiền trong ngày" totalMoney='2000000'/>
+                        <TotalMoney name="Tổng tiền trong tuần" totalMoney='3000000'/>
+                        <TotalMoney name="Tổng tiền trong tháng" totalMoney='4000000'/>
+                        <TotalMoney name="Tổng tiền trong năm" totalMoney='5000000'/>
                     </Row>
                     <Table dataSource={dataSource} columns={columns} />
     

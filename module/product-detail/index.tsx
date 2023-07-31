@@ -6,13 +6,11 @@ import {Image as ImageAnt} from 'antd'
 import style from "./ProductDetail.module.scss"
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import index from '../../pages/our-menu';
 import { DollarCircleOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import Product from '../../components/product';
 
 const cx = classNames.bind(style)
 export default function ProductDetail() {
-   
         const serverImages = [
             
             require("../../assets/imgs/product-img-2.jpg"),
@@ -20,7 +18,9 @@ export default function ProductDetail() {
             require("../../assets/imgs/product-img-1.jpg")
         
         ];
-
+    useEffect (()=> {
+        
+    }, [])
     
   return (
     <>

@@ -50,6 +50,12 @@ a {
   background: var(--primary);
 }
 
+.ant-table-thead th{
+  background-color: #fff !important;
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .slick-dots li button {
   background-color: #b1abac !important; 
 }

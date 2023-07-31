@@ -9,9 +9,9 @@ export default function TotalMoney(props) {
     <>
         <Col span={6} className='gutter-row'>
             <div className={cx('total-money')}>
-                <p className={cx('header')}>
+                <div className={cx('header')}>
                     {props.name}
-                </p>
+                </div>
                 <div className={cx('money')}>
                     {props.totalMoney} VNĐ
                 </div>

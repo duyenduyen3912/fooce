@@ -4,7 +4,7 @@ import style from "./Header.module.scss"
 import classNames from "classnames/bind";
 import Image from "next/image";
 import Link from "next/link";
-
+import 'animate.css';
 const cx = classNames.bind(style)
 
 function Header() {
@@ -59,11 +59,28 @@ function Header() {
                         <ShoppingCartOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
                     </Link>
                 </li>
-                <li className={cx("menu-item", "icon")}>
-                    <Link href={"/my-account"}>
-                        <UserOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
-                    </Link>
-                </li>
+                <div className={`${cx('user')}`}>
+                     <li className={cx("menu-item")}>
+                        
+                            <UserOutlined className={cx('user-icon')} />
+                            
+                    </li>
+                    <div className={`animate__zoomIn ${cx('user-menu')}`}>
+                                <li className={cx('user-menu-item')}>
+                                    <Link href={'/my-account'} className={cx('item-link')}>
+                                        My account
+                                    </Link>
+                                </li>
+                                <li className={cx('user-menu-item')}>
+                                    <Link href={'/login'} className={cx('item-link')}>
+                                        Logout
+                                    </Link>
+                                </li>
+                       
+                        </div>
+                </div>    
+                
+               
                 
                 </Col>
             </Row>
