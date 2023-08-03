@@ -21,9 +21,8 @@ export default function Food() {
     setInputValue(newValue);
   }
 
-  const {isLoading, isError, isFetching, data, error} = useQuery(['FoodList'], getProductList);
-  console.log(data)
-  console.log(config.NETWORK_CONFIG.API_DOMAIN)
+  const {isLoading, isError, isFetching, data, error} = useQuery(['FoodList'], () => getProductList('Food'));
+
   return (
     <>
          <Head >
@@ -58,12 +57,27 @@ export default function Food() {
                         </Space>
                   </div>
                   <Row className={cx("row-product")} gutter={16}>
-                    <Product name="pasta" col={8}/>
-                    <Product name="pasta" col={8}/>
-                    <Product name="pasta" col={8}/>
-                    <Product name="pasta" col={8}/>
-                    <Product name="pasta" col={8}/>
-                    <Product name="pasta" col={8}/>
+                  {
+                      data?.data.map((item, index) => {
+                        return (
+                          <Product 
+                          key={item.id} 
+                          id = {item.id}
+                          name={item.name} 
+                          price={item.price}
+                          image= {item.image}
+                          category= {item.category}
+                          description= {item.description}
+                          long_description= {item.long_description}
+                          size = {item.size}
+                          tag = {item.tag}
+                          weight = {item.weight}
+                          star = {item.Star}
+                          />
+                        )
+                        
+                      })
+                    }
                   </Row>
                 </Col>
                 <Col span={6} className="gutter-row">

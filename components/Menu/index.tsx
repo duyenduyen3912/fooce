@@ -9,13 +9,13 @@ import { useInView } from 'react-intersection-observer'
 
 const cx = classNames.bind(style)
 export default function MenuType(props) {
-    console.log(props.bg)
+   
      const [isVisible, setIsVisible] = useState(false);
          const [ref, inView] = useInView({
              triggerOnce: false, // Kích hoạt animation một lần duy nhất
              threshold: 0.1, // Khi phần tử nằm trong 10% tầm nhìn
          });
-         console.log(isVisible)
+        
        useEffect(() => {
          if (inView) {
            setIsVisible(true);

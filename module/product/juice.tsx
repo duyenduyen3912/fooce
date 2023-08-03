@@ -1,18 +1,21 @@
 import { Button, Col, Input, InputNumber, Row, Select, Slider, Space } from 'antd'
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTitle from '../../components/PageTitle'
 import classNames from 'classnames/bind'
 import style from "./Product.module.scss"
 import Product from '../../components/product'
 import { DollarCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import Search from 'antd/es/input/Search'
+import { useQuery } from 'react-query'
+import { getProductList } from '../../api/ApiProduct'
 
 
 
 const cx = classNames.bind(style)
 export default function Juice() {
   const [inputValue, setInputValue] = useState(1);
+  
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -20,6 +23,9 @@ export default function Juice() {
   const onChange = (newValue: number) => {
     setInputValue(newValue);
   }
+
+  const {isLoading, isError, isFetching, data, error} = useQuery(['JuiceList'], () => getProductList('Juice'));
+
   return (
     <>
          <Head >
@@ -54,12 +60,27 @@ export default function Juice() {
                         </Space>
                   </div>
                   <Row className={cx("row-product")} gutter={16}>
-                    <Product name="juice" col={8}/>
-                    <Product name="juice" col={8}/>
-                    <Product name="juice" col={8}/>
-                    <Product name="juice" col={8}/>
-                    <Product name="juice" col={8}/>
-                    <Product name="juice" col={8}/>
+                    {
+                      data?.data.map((item, index) => {
+                        return (
+                          <Product 
+                          key={item.id} 
+                          id = {item.id}
+                          name={item.name} 
+                          price={item.price}
+                          image= {item.image}
+                          category= {item.category}
+                          description= {item.description}
+                          long_description= {item.long_description}
+                          size = {item.size}
+                          tag = {item.tag}
+                          weight = {item.weight}
+                          star = {item.Star}
+                          />
+                        )
+                        
+                      })
+                    }
                   </Row>
                 </Col>
                 <Col span={6} className="gutter-row">

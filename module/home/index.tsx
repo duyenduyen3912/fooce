@@ -8,21 +8,31 @@ import { useInView } from "react-intersection-observer";
 import Product from "../../components/product";
 import MenuType from "../../components/Menu";
 import image from "../../constant/img/image";
+import { useQuery } from "react-query";
+import { getAllProduct } from "../../api/ApiProduct";
+import Loading from "../../components/loading";
 
 const cx = classNames.bind(style)  
+// const juice  = [];
+// const food = [];
 function Homepage() {
-    // const [isVisible, setIsVisible] = useState(false);
     const inView = true;
-//     const [ref, inView] = useInView({
-//         triggerOnce: false, // Kích hoạt animation một lần duy nhất
-//         threshold: 0.1, // Khi phần tử nằm trong 10% tầm nhìn
-//     });
-//     console.log(isVisible)
-//   useEffect(() => {
-//     if (inView) {
-//       setIsVisible(true);
-//     }
-//   }, [inView]);
+    const [juice, setJuice] = useState([])
+    const [food, setFood] = useState([])
+    const { isLoading, data } = useQuery(['getAllProduct' ], getAllProduct )
+   
+    useEffect(()=>{
+        data?.data.map((item, index) => {
+            
+            if(item.tag.includes("Juice")) {
+                setJuice((prev) => [...prev, item])
+                
+            } else if(item.tag.includes("Food")){
+                setFood((prev) => [...prev, item])
+            }
+        })
+    },[data])
+    
     return (
        
        <div className={cx("homepage")}>
@@ -120,14 +130,26 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
-                        <Product name = {"juice"} col={6}/>
+                    {
+                        juice.map((item,index) => {
+                            
+                            if(index <= 11) {
+
+                                return (
+                                    <Product 
+                                        key={item.id}
+                                        col={6}
+                                        name={item.name} 
+                                        image = {item.image}
+                                        id = {item.id}
+                                        star = {item.Star}
+                                        price = {item.price}
+                                    />
+                                )
+                            }
+                            
+                        })
+                    }
                 </Row>
                 </div>
             </div>
@@ -143,14 +165,22 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
-                        <Product name = {"pasta"} col={6}/>
+                    {
+                        food.map((item,index) => {
+                            if(index <= 11) {
+                                return (
+                                    <Product 
+                                        col={6}
+                                        name={item.name} 
+                                        image = {item.image}
+                                        id = {item.id}
+                                        star = {item.Star}
+                                        price = {item.price}
+                                    />
+                                )
+                            }  
+                        })
+                    }
                 </Row>
                 </div>
             </div>

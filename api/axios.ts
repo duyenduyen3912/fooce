@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 
 const axiosInstance = Axios.create({
   timeout: 3 * 60 * 1000,
-  baseURL: config.NETWORK_CONFIG.API_DOMAIN,
+  baseURL: process.env.REACT_APP_API_DOMAIN,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = `Bearer ${Cookies.get('token')}`;
+    config.headers.Authorization = `${Cookies.get('token')}`;
     return config;
   },
   (error) => Promise.reject(error)
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
         if (res.status === 200) {
           const data = res.data.data;
           Cookies.set('token', data.token);
-          originalConfig.headers.Authorization = `Bearer ${data.token}`;
+          originalConfig.headers.Authorization = `${data.token}`;
           return Axios(originalConfig);
         } else {
           logout();

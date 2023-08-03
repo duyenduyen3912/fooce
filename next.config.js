@@ -4,7 +4,9 @@ const nextConfig = {
   swcMinify: true,
 };
 
-module.exports = nextConfig;
-// module.exports = {
-//   transpilePackages: ["antd"],
-// };
+module.exports = {
+ 
+  env: {
+    REACT_APP_API_DOMAIN: "https://chippisoft.com/API",
+  },
+};
