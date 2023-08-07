@@ -10,7 +10,7 @@
 
 .carousel{
     position: relative;
-    max-height: 100vh;
+    // max-height: 100vh;
     overflow: hidden;
 }
 
@@ -31,6 +31,10 @@
 }
 
 .item-wrap{
+    // position: relative;
+}
+
+.block {
     position: relative;
 }
 
@@ -42,8 +46,11 @@
 
 .image-text{
     position: absolute;
+    top: 0;
     z-index: 1;
 }
+
+
 
 .block-1{
     top: 14%;

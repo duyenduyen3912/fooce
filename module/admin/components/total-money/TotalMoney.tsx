@@ -2,6 +2,7 @@ import React from 'react'
 import style from "./TotalMoney.module.scss"
 import classNames from 'classnames/bind'
 import { Col } from 'antd'
+import { formatCurrency } from '../../../../constant/currencyFormatter'
 
 const cx = classNames.bind(style)
 export default function TotalMoney(props) {
@@ -13,7 +14,7 @@ export default function TotalMoney(props) {
                     {props.name}
                 </div>
                 <div className={cx('money')}>
-                    {props.totalMoney} VNĐ
+                    {formatCurrency(parseInt(props.totalMoney, 10))} VNĐ
                 </div>
 
             </div>
