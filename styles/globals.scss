@@ -31,10 +31,23 @@ a {
   font-family: 'Quicksand' !important;
 }
 
-.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn .ant-pagination .ant-pagination-item-active > a {
     color: var(--primary);
-  
+}
+
+.ant-pagination .ant-pagination-item-active > a {
+    color: var(--primary);
+    &:hover{
+      color: var(--primary);
+    }
+}
+
+.ant-pagination .ant-pagination-item-active  {
+  border-color: var(--primary);
+  &:hover{
+    border-color: var(--primary);
+  }
+
 }
 
 .ant-tabs .ant-tabs-tab.ant-tabs-tab-active::after{

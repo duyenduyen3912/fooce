@@ -1,31 +1,71 @@
-import { Button, Col, Input, InputNumber, Row, Select, Slider, Space } from 'antd'
+import { Button, Col, Input, InputNumber, Pagination, Row, Select, Slider, Space } from 'antd'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import PageTitle from '../../components/PageTitle'
 import classNames from 'classnames/bind'
 import style from "./Product.module.scss"
 import Product from '../../components/product'
-import { DollarCircleOutlined, SearchOutlined } from '@ant-design/icons'
+import { DollarCircleOutlined, MehOutlined, SearchOutlined } from '@ant-design/icons'
 import Search from 'antd/es/input/Search'
 import { useQuery } from 'react-query'
 import { getProductList } from '../../api/ApiProduct'
+import { formatCurrency } from '../../constant/currencyFormatter'
 
 
 
 const cx = classNames.bind(style)
 export default function Juice() {
-  const [inputValue, setInputValue] = useState(1);
-  
+  const [inputValue, setInputValue] = useState(10000);
+  const [sortValue, setSortValue] = useState('rating')
+  const [currentPage, setCurrentPage] = useState(1);
+  const [juice, setJuice] = useState([])
+
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    setSortValue(value)
+    if(value === 'low'){
+      const sortedLow = [...juice].sort((a, b) => a.price - b.price);
+      setJuice(sortedLow)
+    } else if( value === 'high') {
+      const sortedHigh = [...juice].sort((a, b) => b.price - a.price);
+      setJuice(sortedHigh)
+    } else if (value === 'popularity'){
+    } else if(value === 'rating'){
+      setJuice(data?.data)
+    }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const onChange = (newValue: number) => {
     setInputValue(newValue);
   }
 
-  const {isLoading, isError, isFetching, data, error} = useQuery(['JuiceList'], () => getProductList('Juice'));
+  const handleClickFilter = () => {
+    
+    const filterJuice = []
+    const filterPrice = [...juice].map((item, index) => {
+      if(parseInt(item.price, 10) <= inputValue){
+        filterJuice.push(item)
+      }
+    })
+    setJuice(filterJuice)
+    
+  }
 
+  const handleClickReset = () => {
+    setJuice(data?.data)
+    setInputValue(10000)
+  }
+
+  const {isLoading, isError, isFetching, data, error} = useQuery(['JuiceList'], () => getProductList('Juice'));
+  useEffect(()=> {
+    if(data){
+      setJuice(data?.data)
+    }
+  }, [data])
+ 
   return (
     <>
          <Head >
@@ -44,14 +84,13 @@ export default function Juice() {
                         
                         <Space wrap>
                           <Select
-                            defaultValue="default"
+                            defaultValue="rating"
                             style={{ width: 200 }}
                             onChange={handleChange}
+                            value={sortValue}
                             options={[
-                              { label: 'Default sorting',value : 'default' },
                               { label: 'Sort by popularity', value: 'popularity' },
                               { label: 'Sort by average rating', value: 'rating' },
-                              { label: 'Sort by latest', value: 'latest' },
                               { label: 'Sort by price: low to high', value: 'low' },
                               { label: 'Sort by price: high to low', value: 'high' },
                             ]}
@@ -60,28 +99,41 @@ export default function Juice() {
                         </Space>
                   </div>
                   <Row className={cx("row-product")} gutter={16}>
-                    {
-                      data?.data.map((item, index) => {
-                        return (
-                          <Product 
+                    { juice.length != 0 ? 
+                      <>
+                      {juice.map((item, index) => (
+                        <Product 
                           key={item.id} 
-                          id = {item.id}
+                          id={item.id}
                           name={item.name} 
                           price={item.price}
-                          image= {item.image}
-                          category= {item.category}
-                          description= {item.description}
-                          long_description= {item.long_description}
-                          size = {item.size}
-                          tag = {item.tag}
-                          weight = {item.weight}
-                          star = {item.Star}
-                          />
-                        )
-                        
-                      })
+                          image={item.image}
+                          category={item.category}
+                          description={item.description}
+                          long_description={item.long_description}
+                          size={item.size}
+                          tag={item.tag}
+                          weight={item.weight}
+                          star={item.Star}
+                          col={8}
+                        />
+                      ))}
+                      <Pagination
+                        current={currentPage}
+                        total={juice.length} 
+                        pageSize={9}
+                        onChange={handlePageChange}
+                        className={cx("pagination")}
+                      />
+                    </>
+                       : 
+                      <div style={{textAlign: 'center', width: '100%', marginTop: '30px'}}>
+                        <MehOutlined style={{color: '#5a5a5a', fontSize: '30px'}}/>
+                      <p className={cx("notifications")}>Sorry, we don't have any products that match your request</p>
+                      </div>
                     }
                   </Row>
+                  
                 </Col>
                 <Col span={6} className="gutter-row">
                 <div className={cx('filter-price')}>
@@ -91,8 +143,8 @@ export default function Juice() {
                   <Col span={16}>
                     <Slider
                       min={0}
-                      max={40}
-                      step={10}
+                      max={100000}
+                      step={10000}
                       onChange={onChange}
                       value={typeof inputValue === 'number' ? inputValue : 0}
                       trackStyle={{backgroundColor: '#abe9b0'}}
@@ -102,9 +154,9 @@ export default function Juice() {
                     </Col>
                     <Col span={6}>
                       <InputNumber
-                        min={0}
-                        max={40}
-                        style={{width: '50px'}}
+                        min={10000}
+                        max={100000}
+                        style={{width: '100%'}}
                         value={inputValue}
                         onChange={onChange}
                       />
@@ -112,10 +164,14 @@ export default function Juice() {
                 </Row>
                 <div className={cx('price-range-wrap')}>
                   <div className={cx('price-range')}>
-                    Price: <DollarCircleOutlined style={{color: '#5a5a5a', fontSize: '16px'}}/> 0 - <DollarCircleOutlined style={{color: '#5a5a5a', fontSize: '16px'}}/> {inputValue}
+                    Price: <DollarCircleOutlined style={{color: '#5a5a5a', fontSize: '16px'}}/> 0 - <DollarCircleOutlined style={{color: '#5a5a5a', fontSize: '16px'}}/> {formatCurrency(inputValue)}
                   </div>
-                  <Button className={cx('btn')}>filter</Button>
-                </div>
+                  
+                  <div className={cx('price-range-btn')}>
+                    <Button className={cx('btn')} onClick= {handleClickFilter}>filter</Button>
+                    <Button className={cx('btn', 'btn-reset')} onClick= {handleClickReset}>reset</Button>
+                  </div>
+                  </div>
                 <div className={cx('product-category')}>
                   <div className={cx('filter-price')}>
                     Product categories

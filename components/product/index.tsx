@@ -13,7 +13,7 @@ export default function Product(props) {
   const imageList: string[] = props.image?.split(";")
   const image: string[] = imageList || [];
   return (
-    <Col span={props.col ? props.col : 6} className="gutter-row" xs={24} sm={12} md={8} lg={props.col}>
+    <Col span={props.col ? props.col : 6} className="gutter-row" xs={24} sm={24} md={24} lg={props.col}>
       <div className={cx("product")}>
         <div className={cx("img-wrap")}>
           <Image src={image.length != 0 ? imageList[0] : ''} alt="juice" className={cx("img")} preview={false} />

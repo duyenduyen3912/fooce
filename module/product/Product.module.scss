@@ -20,14 +20,19 @@
     }
 
     .price-range-wrap{
-        display: flex;
-        justify-content: space-between;
+        
         align-items: center;
         margin-top: 20px;
         .price-range{
+            margin-right: 8px;
             font-size: 16px;
             font-weight: 500;
             color: #5a5a5a;
+        }
+        .price-range-btn{
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
         }
         .btn{
             padding: 3px 31px;
@@ -39,6 +44,12 @@
             &:hover{
                 color: #fff;
                 border-color: transparent;
+                // background-color: var(--primary);
+            }
+        }
+        .btn-reset{
+            background-color: var(--primary);
+            &:hover{
                 background-color: var(--primary);
             }
         }
@@ -64,5 +75,22 @@
             padding: 10px;
         }
     }
+    
+}
+
+.row-product{
+    flex-wrap: wrap;
+    .notifications{
+        text-align: center;
+        font-size: 18px;
+        color: var(--descriptionTextColor);
+    }
+    .pagination {
+        width: 100%;
+        margin-top: 20px;
+        text-align: center;
+        
+    }
+
     
 }

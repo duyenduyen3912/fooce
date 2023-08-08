@@ -32,7 +32,7 @@ function Homepage() {
             }
         })
     },[data])
-    
+  
     return (
        
        <div className={cx("homepage")}>
