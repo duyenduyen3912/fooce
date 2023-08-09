@@ -1,5 +1,6 @@
 import { HomeOutlined, SearchOutlined, HeartOutlined, BookOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Menu, Row } from "antd";
+import {useSession} from "next-auth/react"
 import style from "./Header.module.scss"
 import classNames from "classnames/bind";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import 'animate.css';
 const cx = classNames.bind(style)
 
 function Header() {
+    const {data: session} = useSession()
     return (
         <div className={cx("header")}>
             <Row className={cx("header-wrap")}>
@@ -59,12 +61,14 @@ function Header() {
                         <ShoppingCartOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
                     </Link>
                 </li>
-                <div className={`${cx('user')}`}>
-                     <li className={cx("menu-item")}>
-                        
-                            <UserOutlined className={cx('user-icon')} />
-                            
-                    </li>
+                
+                    {session?.user ? 
+                    <div className={`${cx('user')}`}>
+                    <li className={cx("menu-item")}>
+                       
+                           <UserOutlined className={cx('user-icon')} />
+                           
+                   </li>
                     <div className={`animate__zoomIn ${cx('user-menu')}`}>
                                 <li className={cx('user-menu-item')}>
                                     <Link href={'/my-account'} className={cx('item-link')}>
@@ -77,8 +81,16 @@ function Header() {
                                     </Link>
                                 </li>
                        
-                        </div>
-                </div>    
+                    </div> 
+                    </div>
+                    :
+                    <li className={cx("menu-item")}>
+                        <Link href={"/login"} className={cx("menu-item-link")} tabIndex = "0">
+                            Login
+                        </Link>
+                    </li>
+                    }
+              
                 
                
                 
