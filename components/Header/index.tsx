@@ -1,15 +1,19 @@
 import { HomeOutlined, SearchOutlined, HeartOutlined, BookOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
 import { Col, Menu, Row } from "antd";
-import {useSession} from "next-auth/react"
 import style from "./Header.module.scss"
 import classNames from "classnames/bind";
 import Image from "next/image";
 import Link from "next/link";
 import 'animate.css';
+import ApiUser from "../../api/ApiUser";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/slices/UserSlice";
 const cx = classNames.bind(style)
 
 function Header() {
-    const {data: session} = useSession()
+
+    const dispatch = useDispatch()
+    const onHandleLogout = () => dispatch(logoutUser())
     return (
         <div className={cx("header")}>
             <Row className={cx("header-wrap")}>
@@ -62,7 +66,7 @@ function Header() {
                     </Link>
                 </li>
                 
-                    {session?.user ? 
+                    {ApiUser.isLogin() ?
                     <div className={`${cx('user')}`}>
                     <li className={cx("menu-item")}>
                        
@@ -76,7 +80,7 @@ function Header() {
                                     </Link>
                                 </li>
                                 <li className={cx('user-menu-item')}>
-                                    <Link href={'/login'} className={cx('item-link')}>
+                                    <Link href={'/login'} className={cx('item-link')} onClick={onHandleLogout}>
                                         Logout
                                     </Link>
                                 </li>

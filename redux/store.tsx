@@ -11,10 +11,6 @@ import {
   REGISTER,
 } from "redux-persist";
 import UserReducer from "./slices/UserSlice";
-
-
-import SystemConfigReducer from "./slices/SystemConfigSlice";
-import MenuReducer from "./slices/MenuSlice";
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 
@@ -50,8 +46,6 @@ const persistConfig = {
 
 const rootReducers = combineReducers({
   user: UserReducer,
-  systemConfig: SystemConfigReducer,
-  menu: MenuReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

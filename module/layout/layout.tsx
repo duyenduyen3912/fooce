@@ -7,20 +7,20 @@ import { useRouter } from "next/router";
 
 
 const cx = classNames.bind(style)
-function Layout({children, session}) {
+function Layout({children}) {
     const router = useRouter();
     const path = router.asPath;
-    if (path === "/login"){
+    if (path.includes("/login")){
         return (
-            <SessionProvider session={session}>
+           
                 <div>
                     {children}
                 </div>
-            </SessionProvider>
+        
     );
     } else {
         return ( 
-        <SessionProvider session={session}>
+      
         <div className={cx("app")}>
             <div className={cx("header")} >
                 <Header />
@@ -33,7 +33,7 @@ function Layout({children, session}) {
             </div>
         </div>
         
-        </SessionProvider>
+   
         
      )
     }

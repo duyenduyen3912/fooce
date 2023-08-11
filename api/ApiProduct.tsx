@@ -6,7 +6,7 @@ export interface IProductItem {
         Star: number,
         category: string,
         description: string,
-        id: string,
+        id: number,
         image: string,
         long_description: string,
         name: string,
@@ -26,12 +26,20 @@ export interface IComment {
     }]
 }
 
+export interface IAddProductToCart {
+    idUser: number,
+    idproduct: number,
+    quantity: number,
+    note: string
+}
+
 const path = {
     getAllProduct: '/DGetAllProduct',
     getAllProductByTag: '/DProduct?tag=',
     getProductID: '/DProduct?id=',
     getComment: '/DRate?id=',
-    getHighRateProduct: '/'
+    getHighRateProduct: '/',
+    addToCart : 'DCart?action=add'
 }
 
 export function getProductList(params: any): Promise<any> {
@@ -52,4 +60,8 @@ export function getHighRateProduct(params: string): Promise<IProductItem> {
 
 export function getAllProduct(): Promise<IProductItem> {
     return sendGet(path.getAllProduct)
+}
+
+export function addProductToCart(): Promise<IAddProductToCart> {
+    return sendGet(path.addToCart)
 }

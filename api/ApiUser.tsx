@@ -1,12 +1,13 @@
 import {sendGet, sendPost} from "./axios";
 import config from "../config";
 import store from "../redux/store";
-import { IUserLogin, ILoginBody, IAccountInfo, ILoginUser } from "../type";
+import { IUserLogin, ILoginBody, IAccountInfo, ILoginUser, ISignupBody } from "../type";
 import axios from "axios";
 
 
 const path = {
-    login: "/API/API.php",
+    login: "/API.php",
+    signup: "/API.php",
     getUserInfor: "/getUserInfor"
 
 };
@@ -17,16 +18,26 @@ function isLogin(): boolean {
 
 function getAuthToken(): string | undefined {
   const {user} = store.getState();
-  return user?.accessToken;
+  return user?.jwt;
+}
+
+function getIdUser(): number | undefined {
+  const {user} = store.getState();
+  return user?.id;
 }
 
 function getUserInfor(params:any): Promise<IUserLogin> {
     return sendGet(path.getUserInfor + '/' + params.id, params )
 }
 
-function login(body: ILoginBody): Promise<ILoginUser> {
+export const login = (body: ILoginBody): Promise<any> => {
     return sendPost(path.login,body);
   }
+
+export const signup = (body: ISignupBody): Promise<any> => {
+  return sendPost(path.signup,body);
+}
+
 
 
 
@@ -34,5 +45,5 @@ export default {
     getUserInfor,
     isLogin,
     getAuthToken,
-    login,
+    getIdUser
 }

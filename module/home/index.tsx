@@ -13,8 +13,7 @@ import { getAllProduct } from "../../api/ApiProduct";
 import Loading from "../../components/loading";
 
 const cx = classNames.bind(style)  
-// const juice  = [];
-// const food = [];
+
 function Homepage() {
     const inView = true;
     const [juice, setJuice] = useState([])

@@ -7,11 +7,37 @@ import { Button, Col, Rate, Image } from 'antd'
 import { DollarOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { formatCurrency } from '../../constant/currencyFormatter'
-
+import { useMutation } from 'react-query'
+import { addProductToCart, IAddProductToCart } from '../../api/ApiProduct'
+import ApiUser from '../../api/ApiUser'
 const cx = classNames.bind(style)
 export default function Product(props) {
   const imageList: string[] = props.image?.split(";")
   const image: string[] = imageList || [];
+  const addProductMutation = useMutation (
+    async (payload : IAddProductToCart) =>  await addProductToCart (payload), 
+    {
+      onSuccess: async (data: any) => {
+        try {
+           console.log(data)
+        } catch (error) {
+          console.error("Error in onSuccess:", error);
+          
+        }
+      },
+      onError: () => {
+       
+      },
+    }
+  )
+  const onHandleAddtocart = () => {
+        addProductMutation.mutate({
+          idUser: ApiUser.getIdUser(),
+          idproduct : props.id,
+          quantity : 1,
+          note: ''
+})
+  }
   return (
     <Col span={props.col ? props.col : 6} className="gutter-row" xs={24} sm={24} md={24} lg={props.col}>
       <div className={cx("product")}>
@@ -19,7 +45,11 @@ export default function Product(props) {
           <Image src={image.length != 0 ? imageList[0] : ''} alt="juice" className={cx("img")} preview={false} />
           <div className={cx("product-btn")}>
 
-            <Button type='primary' className={`animate__animated animate__bounceIn ${cx("order-btn")}`}  >add to cart</Button>
+            <Button 
+              type='primary' 
+              className='animate__animated animate__bounceIn btn'
+              onClick={onHandleAddtocart}  
+              >add to cart</Button>
           </div>
         </div>
         <Link href={`/product/${props.id}`}>

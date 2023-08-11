@@ -16,25 +16,30 @@ export interface IPermission {
   
 
 export interface IAccountInfo {
-    user?: IUserLogin;
-    accessToken?: string;
-    refreshToken?: string;
-    isConfirmed?: boolean;
-    role?: {
-      id: number;
-      roleName: string;
-      permissions: IPermission[];
-    };
+    username?: string;
+    id: number;
+    jwt?: string;
+    role?:  number;
+      
+    
 }
 
 export interface ILoginUser {
   status: string;
   data: string;
   jwt: string;
-  isAdmin;
+  isAdmin: string;
 }
 
 export interface ILoginBody{
-  email: string;
+  username: string;
   password: string;
+}
+
+export interface ISignupBody{
+  username: string;
+  phone: string;
+  email: string;
+  passwword: string;
+  fullname: string;
 }
