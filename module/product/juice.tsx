@@ -99,9 +99,9 @@ export default function Juice() {
                         </Space>
                   </div>
                   <Row className={cx("row-product")} gutter={16}>
-                    { juice.length != 0 ? 
+                    { juice?.length != 0 ? 
                       <>
-                      {juice.map((item, index) => (
+                      {juice?.map((item, index) => (
                         <Product 
                           key={item.id} 
                           id={item.id}
@@ -120,7 +120,7 @@ export default function Juice() {
                       ))}
                       <Pagination
                         current={currentPage}
-                        total={juice.length} 
+                        total={juice?.length} 
                         pageSize={9}
                         onChange={handlePageChange}
                         className={cx("pagination")}

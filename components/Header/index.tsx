@@ -5,15 +5,20 @@ import classNames from "classnames/bind";
 import Image from "next/image";
 import Link from "next/link";
 import 'animate.css';
-import ApiUser from "../../api/ApiUser";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/slices/UserSlice";
+import ApiAdmin from "../../api/ApiAdmin";
+import ApiUser from "../../api/ApiUser";
+import { useRouter } from "next/router";
 const cx = classNames.bind(style)
 
 function Header() {
-
+    const router = useRouter()
     const dispatch = useDispatch()
-    const onHandleLogout = () => dispatch(logoutUser())
+    const onHandleLogout = () =>{
+        dispatch(logoutUser())
+        router.push("/login")
+    } 
     return (
         <div className={cx("header")}>
             <Row className={cx("header-wrap")}>
@@ -46,11 +51,38 @@ function Header() {
                             About us
                         </Link>
                     </li>
-                    <li className={cx("menu-item", "icon")}>
-                        <Link href={"/admin"} className={cx("menu-item-link")} tabIndex = "0">
-                                Admin
-                        </Link>
-                    </li>
+                    { ApiAdmin.getRoleAdmin() === "1" ? 
+                    <>
+                   
+                        <div className={`${cx('user')}`}>
+                    <li className={cx("menu-item")}>
+                    <Link href={"/admin"} className={cx("menu-item-link")} tabIndex = "0">
+                                    Admin
+                            </Link>  
+                   </li>
+                    <div className={`animate__zoomIn ${cx('user-menu', 'admin-menu')}`}>
+                                <li className={cx('user-menu-item')}>
+                                    <Link href={'/admin/dashboard'} className={cx('item-link')}>
+                                        Dashboard
+                                    </Link>
+                                </li>
+                                <li className={cx('user-menu-item')}>
+                                    <Link href={'/admin/product'} className={cx('item-link')} >
+                                        Product Manager
+                                    </Link>
+                                </li>
+                       
+                    </div> 
+                    </div>
+                    </>
+                        
+                        
+                        
+                        
+                        
+                        : null
+                    }
+                    
                 </Col>
                 <Col  span={7} className={cx("right")}>
                 <li className={cx("menu-item")}>
@@ -60,10 +92,13 @@ function Header() {
                     </div>
                 </li>
                 <li className={cx("menu-item", "icon")}>
-                    <Link href={"/cart"}>
-                    
-                        <ShoppingCartOutlined style={{ fontSize: '20px', color: '#FBBCC0', fontWeight: '600' }}/>
+                    <div style={{position: 'relative', minWidth: '35px'}}>
+                        <Link href={"/cart"}>
+                        <ShoppingCartOutlined style={{ fontSize: '24px', color: '#FBBCC0', fontWeight: '600' }}/>
+                        <span className={cx('quantity')}>4</span>
                     </Link>
+                    </div>
+                    
                 </li>
                 
                     {ApiUser.isLogin() ?

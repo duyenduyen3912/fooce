@@ -19,7 +19,7 @@ export interface IAccountInfo {
     username?: string;
     id: number;
     jwt?: string;
-    role?:  number;
+    role?:  string;
       
     
 }
