@@ -61,16 +61,21 @@ function Header() {
                             </Link>  
                    </li>
                     <div className={`animate__zoomIn ${cx('user-menu', 'admin-menu')}`}>
-                                <li className={cx('user-menu-item')}>
-                                    <Link href={'/admin/dashboard'} className={cx('item-link')}>
-                                        Dashboard
-                                    </Link>
-                                </li>
-                                <li className={cx('user-menu-item')}>
-                                    <Link href={'/admin/product'} className={cx('item-link')} >
-                                        Product Manager
-                                    </Link>
-                                </li>
+                        <li className={cx('user-menu-item')}>
+                            <Link href={'/admin/dashboard'} className={cx('item-link')}>
+                                Dashboard
+                            </Link>
+                        </li>
+                        <li className={cx('user-menu-item')}>
+                            <Link href={'/admin/new-product'} className={cx('item-link')} >
+                                New product
+                            </Link>
+                        </li>
+                        <li className={cx('user-menu-item')}>
+                            <Link href={'/admin/product'} className={cx('item-link')} >
+                                Product Manager
+                            </Link>
+                        </li>
                        
                     </div> 
                     </div>
