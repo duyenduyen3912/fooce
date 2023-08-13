@@ -18,7 +18,7 @@ function Homepage() {
     const inView = true;
     const [juice, setJuice] = useState([])
     const [food, setFood] = useState([])
-    const { isLoading, data } = useQuery(['getAllProduct' ], getAllProduct )
+    const { isLoading, data } = useQuery(['getAllProduct' ],() =>  getAllProduct('1') )
    
     useEffect(()=>{
         data?.data.map((item, index) => {
@@ -31,7 +31,7 @@ function Homepage() {
             }
         })
     },[data])
-  
+ 
     return (
        
        <div className={cx("homepage")}>
@@ -166,7 +166,7 @@ function Homepage() {
                 <Row gutter={16}>
                     {
                         food.map((item,index) => {
-                            if(index <= 11) {
+                            if(index <= 8) {
                                 return (
                                     <Product 
                                         col={6}

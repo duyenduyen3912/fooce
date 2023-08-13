@@ -1,7 +1,10 @@
-import { sendGet } from "./axios";
+import ApiUser from "./ApiUser";
+import { sendGet, sendPost } from "./axios";
 
 
 export interface IProductItem {
+    total_pages: string,
+    total_products: string,
     data: [{
         Star: number,
         category: string,
@@ -27,23 +30,24 @@ export interface IComment {
 }
 
 export interface IAddProductToCart {
-    idUser: number,
+    iduser: number,
     idproduct: number,
     quantity: number,
     note: string
 }
 
 const path = {
-    getAllProduct: '/DGetAllProduct',
+    getAllProduct: '/DGetAllProduct?page=',
     getAllProductByTag: '/DProduct?tag=',
     getProductID: '/DProduct?id=',
     getComment: '/DRate?id=',
     getHighRateProduct: '/',
-    addToCart : 'DCart?action=add'
+    addToCart : '/DCart?action=add',
+    deleteProduct: '/DDelete.php'
 }
 
 export function getProductList(params: any): Promise<any> {
-    return sendGet(path.getAllProductByTag + params)
+    return sendGet(path.getAllProductByTag + params.tag + '&page='+ params.indexPage)
 }
 
 export function getProductID(params: string): Promise<IProductItem> {
@@ -58,10 +62,18 @@ export function getHighRateProduct(params: string): Promise<IProductItem> {
     return sendGet(path.getHighRateProduct + params)
 }
 
-export function getAllProduct(): Promise<IProductItem> {
-    return sendGet(path.getAllProduct)
+export function getAllProduct(params): Promise<IProductItem> {
+    return sendGet(path.getAllProduct+params)
 }
 
-export function addProductToCart(): Promise<IAddProductToCart> {
-    return sendGet(path.addToCart)
+export function addProductToCart(params :IAddProductToCart): Promise<any> {
+    return sendPost(path.addToCart, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
+}
+
+export function deleteProduct(params: string) : Promise<any> {
+    return sendPost(path.deleteProduct, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
 }

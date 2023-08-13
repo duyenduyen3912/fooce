@@ -1,31 +1,74 @@
-import { Button,  Table } from 'antd';
+import { Button,  Image,  Modal,  Pagination,  Table } from 'antd';
 import { ColumnsType, TableProps } from 'antd/es/table';
 import Head from 'next/head'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PageTitle from '../../../components/PageTitle'
 import classNames from 'classnames/bind'
 import style from "../Admin.module.scss"
+import { useMutation, useQuery } from 'react-query';
+import { getAllProduct } from '../../../api/ApiProduct';
+import ModalConfirm from '../../../components/Modal';
+import Link from 'next/link';
 
 
 interface DataType_Product {
-    key: React.Key;
+    id: string;
     name: string;
     price: number;
     tag: string;
     category: string;
 }
 
-const columns_product: ColumnsType<DataType_Product> = [
+const _ = require('lodash');
+const cx = classNames.bind(style)
+export default function ProductManager() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataTable, setDataTable] = useState([])
+  const [categoryList, setCategoryList] = useState([])
+  const [idProduct, setIdProduct] = useState('')
+  const {  data, refetch} = useQuery(['getAllProduct', currentPage], () => getAllProduct(currentPage.toString()));
+  
+ 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };  
+
+  const handleDelete = (id) => {
+    setIdProduct(id)
+  }
+ 
+
+ 
+  const columns_product: ColumnsType<DataType_Product> = [
+    {
+      title: ' ',
+      dataIndex: 'key',
+      render: (_, __, index) =>
+          (currentPage - 1) * 9 + index + 1,
+      
+    },
     {
       title: 'Name',
       dataIndex: 'name',
-      
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
       onFilter: (value: string, record) => record.name.indexOf(value) === 0,
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ['descend'],
     },
+    // {
+    //   title: 'Image',
+    //   dataIndex: 'image',
+    //   render: (_, record) => {
+    //     return (
+    //         <div className={cx("img-wrap")}>
+    //             <Image 
+    //             src={record.image[0]}
+    //             fallback={require("../../assets/imgs/logo.png")}
+                
+    //             />
+    //         </div>
+    //     )
+    // }
+    // },
     {
       title: 'Price',
       dataIndex: 'price',
@@ -50,61 +93,14 @@ const columns_product: ColumnsType<DataType_Product> = [
     {
         title: 'Category',
         dataIndex: 'category',
-        filters: [
+        filters: categoryList.map((item) =>
+        (
           {
-            text: 'Pizza',
-            value: 'pizza',
-          },
-          {
-            text: 'Noodle soup',
-            value: 'noodle_soup',
-          },
-          {
-            text: 'Rice Noodle',
-            value: 'rice_noodle',
-          },
-          {
-            text: 'Rice bowl',
-            value: 'rice_bowl',
-          },
-          {
-            text: 'Beefsteak',
-            value: 'beefsteak',
-          },
-          {
-            text: 'Pasta',
-            value: 'pasta',
-          },
-          {
-            text: 'Colorful',
-            value: 'colorful',
-          },
-          {
-            text: 'Fruit Bowl',
-            value: 'fruit_Bowl',
-          },
-          {
-            text: 'Healthy',
-            value: 'healthy',
-          },
-          {
-            text: 'Ice Cream',
-            value: 'ice_Cream',
-          },
-          {
-            text: 'Mixed',
-            value: 'mixed',
-          },
-          {
-            text: 'Smoothie',
-            value: 'smoothie',
-          },
-          {
-            text: 'Shakes',
-            value: 'shakes',
-          },
-
-        ],
+            text: item,
+            value:item
+          }
+        )
+        ),
         onFilter: (value: string, record) => record.category.indexOf(value) === 0,
       },
     {
@@ -114,42 +110,39 @@ const columns_product: ColumnsType<DataType_Product> = [
         render: (_, record) => {
             return (
                 <div style={{textAlign: 'center'}}>
-                    <Button className='btn'>view</Button>
+                    <Button >
+                      <Link href={`/product/${record.id}`}>
+                            view
+                      </Link>
+                    </Button>
                     <br />
-                    <Button className='btn'>delete</Button>
+                    <Button onClick={()=> handleDelete(record.id)}>delete</Button>
                     <br />
-                    <Button className='btn'>update</Button>
+                    <Button >
+                      <Link href={`/admin/product/${record.id}`}>
+                          update
+                      </Link>
+                    </Button>
                 </div>
                 
             )
         }
     }
   ];
-
-
-const data_product = [
-{
-    key: '1',
-    name: 'Smoothie',
-    price: 32000,
-    tag: 'Juice',
-    category: 'shakes'
-},
-{
-    key: '2',
-    name: 'Pasta',
-    price: 330000,
-    tag: 'Food',
-    category: 'pasta'
-    },
-];
-
-const cx = classNames.bind(style)
-export default function ProductManager() {
-const onChange: TableProps<DataType_Product>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-    };
-        
+  useEffect(()=> {
+      if(data) {
+        const filteredData = data.data.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: parseInt(item.price,10),
+          tag: item.tag,
+          category: item.category
+        }));
+        const uniqueCategories = _.uniqBy(data.data.map(item => item.category));
+        setDataTable(filteredData)
+        setCategoryList(uniqueCategories)
+      }
+    }, [data])
   return (
     <div>
         <Head >
@@ -157,9 +150,19 @@ const onChange: TableProps<DataType_Product>['onChange'] = (pagination, filters,
             <meta name="description" content="Generated by create next app" />
             <link rel="icon" href="/icon.png" />
         </Head>
-        <PageTitle name = "Admin - Product List" />
+        <PageTitle name = "Admin - Product Manager" />
         <div className={cx('admin')}>
-        <Table columns={columns_product} dataSource={data_product} onChange={onChange} />
+        <Table columns={columns_product} dataSource={dataTable} pagination={false}/>
+        <div style={{textAlign: 'center', padding: '20px 0'}}>
+          <Pagination
+          current={currentPage}
+          total={parseInt(data?.total_products,10)}
+          pageSize={9}
+          onChange={handlePageChange}
+          className={cx("pagination")}
+          />
+        </div>
+        <ModalConfirm actionModal={'delete'} idproduct={idProduct} onDeleteProduct={refetch}/>
         </div>
     </div>
   )

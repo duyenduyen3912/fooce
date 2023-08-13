@@ -14,7 +14,7 @@ import { formatCurrency } from '../../constant/currencyFormatter';
 
 const cx = classNames.bind(style)
 export default function ProductDetail(props) {
-    const { isLoading, isError, isFetching, data, error } = useQuery(['product'], () => getProductID(`${props.id}`),
+    const { isLoading, isError, isFetching, data, error } = useQuery(['product', props.id], () => getProductID(`${props.id}`),
         {
             enabled: props.id != undefined
         }
@@ -27,7 +27,7 @@ export default function ProductDetail(props) {
     );
     const severImages: string[] = data?.data[0].image.split(";")
     const image: string[] = severImages || [];
-   console.log(Math.round( (data?.data[0].Star) * 2) / 2)
+   
  
     return (
         <>
@@ -47,7 +47,7 @@ export default function ProductDetail(props) {
                             <ImageAnt.PreviewGroup >
                                 <Row gutter={8} className={cx("img-group")}>
                                 {severImages?.map((imageUrl, index) => {
-                                    console.log(index)
+                                 
                                     if (index != 0 && imageUrl != '') {
                                         return (
                                             <Col className={`gutter-row ${cx("img-group-wrap")}`} span={8}>

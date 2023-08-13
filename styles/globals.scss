@@ -69,6 +69,11 @@ a {
   font-weight: 600;
 }
 
+.ant-btn:hover{
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
 .slick-dots li button {
   background-color: #b1abac !important; 
 }

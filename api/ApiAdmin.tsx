@@ -1,7 +1,7 @@
 import {sendGet, sendPost} from "./axios";
 import config from "../config";
 import store from "../redux/store";
-
+import ApiUser from "./ApiUser";
 
 
 const path = {
@@ -16,7 +16,9 @@ function getRoleAdmin(): string | undefined {
 }
 
 export const getStatistical = (param: string): Promise<any> => {
-    return sendGet(path.getStatistical+param);
+    return sendGet(path.getStatistical+param,null, {
+      Authorization : ApiUser.getAuthToken()
+  });
   }
 
 

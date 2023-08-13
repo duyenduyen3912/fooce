@@ -5,9 +5,11 @@ import PageTitle from '../../../components/PageTitle'
 import type { UploadFile } from 'antd/es/upload/interface';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import { PlusOutlined } from '@ant-design/icons';
-import TextArea from 'antd/es/input/TextArea';
 import classNames from 'classnames/bind'
 import style from "../Admin.module.scss"
+import { useQuery } from 'react-query';
+import { getProductID } from '../../../api/ApiProduct';
+import { useRouter } from 'next/router';
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -17,6 +19,8 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
 });
 
+const { TextArea } = Input;
+
 const cx = classNames.bind(style)
 
 export default function ProductDetailAdmin() {
@@ -24,7 +28,16 @@ export default function ProductDetailAdmin() {
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-  
+    const router = useRouter();
+    const { id } = router.query;
+    const { isLoading, isError, isFetching, data, error } = useQuery(['product', id], () => getProductID(`${id}`),
+        {
+            enabled: id != undefined
+        }
+    );
+    const severImages: string[] = data?.data[0].image.split(";")
+    const image: string[] = severImages || [];
+    
     const handleCancel = () => setPreviewOpen(false);
   
     const handlePreview = async (file: UploadFile) => {
@@ -46,6 +59,8 @@ export default function ProductDetailAdmin() {
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
     );
+    console.log(data)
+
   return (
     <div>
         <Head >

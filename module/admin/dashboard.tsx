@@ -7,6 +7,8 @@ import PageTitle from '../../components/PageTitle'
 import TotalMoney from '../../module/admin/components/total-money/TotalMoney'
 import classNames from 'classnames/bind'
 import style from "./Admin.module.scss"
+import { useQuery } from 'react-query'
+import { getStatistical } from '../../api/ApiAdmin'
 interface DataType {
   key: string,
   order: string,
@@ -74,7 +76,7 @@ const dataSource: DataType[] = [
       total: 1000000
 
   },{
-      key: '2',
+      key: '3',
       order: '#26112',
       date: '26-07-2022',
       status: 'hold on',
@@ -86,6 +88,10 @@ const dataSource: DataType[] = [
 
 const cx = classNames.bind(style)
 function DashboardAdmin() {
+    const {data:StatisticalWeek} = useQuery(['StatisticalWeek'], () => getStatistical('week'));
+    const {data:StatisticalMonth} = useQuery(['StatisticalWeek'], () => getStatistical('month'));
+    const {data:StatisticalYear} = useQuery(['StatisticalWeek'], () => getStatistical('year'));
+  
   return (
     <div>
         <>
@@ -96,11 +102,10 @@ function DashboardAdmin() {
         </Head>
         <PageTitle name = "Admin - Dashboard" />
             <div className={cx('admin')}>
-                <Row gutter={16} style={{marginBottom: '40px'}}>
-                    <TotalMoney name="Tổng tiền trong ngày" totalMoney='2000000'/>
-                    <TotalMoney name="Tổng tiền trong tuần" totalMoney='3000000'/>
-                    <TotalMoney name="Tổng tiền trong tháng" totalMoney='4000000'/>
-                    <TotalMoney name="Tổng tiền trong năm" totalMoney='5000000'/>
+                <Row gutter={16} style={{marginBottom: '40px'}} justify='space-around'>
+                    <TotalMoney name="Tổng tiền trong tuần" totalMoney={StatisticalWeek?.data[0].Total}/>
+                    <TotalMoney name="Tổng tiền trong tháng" totalMoney={StatisticalMonth?.data[0].Total}/>
+                    <TotalMoney name="Tổng tiền trong năm" totalMoney={StatisticalYear?.data[0].Total}/>
                 </Row>
                 <Table dataSource={dataSource} columns={columns} />
             </div>
