@@ -36,18 +36,27 @@ export interface IAddProductToCart {
     note: string
 }
 
+export interface ITagListPath {
+    tag: string,
+    indexPage: string
+}
+
 const path = {
     getAllProduct: '/DGetAllProduct?page=',
     getAllProductByTag: '/DProduct?tag=',
     getProductID: '/DProduct?id=',
+    getProductInCart: '/DCart.php?action=get',
     getComment: '/DRate?id=',
     getHighRateProduct: '/',
     addToCart : '/DCart?action=add',
-    deleteProduct: '/DDelete.php'
+    deleteProduct: '/DDelete.php',
+    deleteProductInCart: '/DCart?action=delete',
+    updateProductInCart: '/DCart?action=update',
+    addNewProduct: '/DNewProduct.php'
 }
 
-export function getProductList(params: any): Promise<any> {
-    return sendGet(path.getAllProductByTag + params.tag + '&page='+ params.indexPage)
+export function getProductList(params: ITagListPath): Promise<any> {
+    return sendGet(path.getAllProductByTag + params.tag + "&page=" +params.indexPage )
 }
 
 export function getProductID(params: string): Promise<IProductItem> {
@@ -58,12 +67,16 @@ export function getComment(params: string): Promise<IComment> {
     return sendGet(path.getComment + params)
 }
 
-export function getHighRateProduct(params: string): Promise<IProductItem> {
-    return sendGet(path.getHighRateProduct + params)
-}
+
 
 export function getAllProduct(params): Promise<IProductItem> {
     return sendGet(path.getAllProduct+params)
+}
+
+export function getProductInCart(params): Promise<any> {
+    return sendPost(path.getProductInCart, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
 }
 
 export function addProductToCart(params :IAddProductToCart): Promise<any> {
@@ -77,3 +90,22 @@ export function deleteProduct(params: string) : Promise<any> {
         Authorization : ApiUser.getAuthToken()
     })
 }
+
+export function deleteProductInCart(params: string) : Promise<any> {
+    return sendPost(path.deleteProductInCart, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
+}
+
+export function updateProductInCart(params: any) : Promise<any> {
+    return sendPost(path.updateProductInCart, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
+}
+
+export function addNewProduct(params: any) : Promise<any> {
+    return sendPost(path.addNewProduct, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
+}
+

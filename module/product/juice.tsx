@@ -60,16 +60,16 @@ export default function Juice() {
   }
 
   const {isLoading, isError, isFetching, data, error} = useQuery(['JuiceList', currentPage], () => getProductList({
-    tag : 'Juice',
+    tag: "Juice",
     indexPage: currentPage.toString()
   }));
 
   useEffect(()=> {
     if(data !== undefined) {
       console.log(data)
-      const juiceList = JSON.parse(data?.data)
-      console.log(juiceList)
-      setJuice(juiceList)
+      // const juiceList = JSON.parse(data?.data)
+      // console.log(juiceList)
+      // setJuice(juiceList)
     }
       
     

@@ -235,3 +235,19 @@
         color: var(--textColor);
     }
 }
+
+.order-btn{
+    margin-top: 10px;
+    border: none;
+    padding: 18px 37px;
+    height: 100%;
+    color: #fff;
+    background-color: var(--primary);
+    font-weight: 500;
+    &:hover{
+        color: #fff !important;
+        border-color: transparent !important;
+        background-color: var(--secondary) !important;
+
+    }
+}

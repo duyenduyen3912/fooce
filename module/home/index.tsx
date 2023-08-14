@@ -9,8 +9,9 @@ import Product from "../../components/product";
 import MenuType from "../../components/Menu";
 import image from "../../constant/img/image";
 import { useQuery } from "react-query";
-import { getAllProduct } from "../../api/ApiProduct";
+import { getAllProduct, getProductInCart } from "../../api/ApiProduct";
 import Loading from "../../components/loading";
+import ApiUser from "../../api/ApiUser";
 
 const cx = classNames.bind(style)  
 
@@ -20,6 +21,7 @@ function Homepage() {
     const [food, setFood] = useState([])
     const { isLoading, data } = useQuery(['getAllProduct' ],() =>  getAllProduct('1') )
    
+
     useEffect(()=>{
         data?.data.map((item, index) => {
             
@@ -30,6 +32,7 @@ function Homepage() {
                 setFood((prev) => [...prev, item])
             }
         })
+       
     },[data])
  
     return (

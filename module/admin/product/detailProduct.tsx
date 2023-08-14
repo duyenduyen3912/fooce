@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Upload } from 'antd'
+import { Button, Col, Form, Input, InputNumber, message, Modal, Row, Upload } from 'antd'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import PageTitle from '../../../components/PageTitle'
@@ -7,8 +7,8 @@ import type { RcFile, UploadProps } from 'antd/es/upload';
 import { PlusOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind'
 import style from "../Admin.module.scss"
-import { useQuery } from 'react-query';
-import { getProductID } from '../../../api/ApiProduct';
+import { useMutation, useQuery } from 'react-query';
+import { addNewProduct, getProductID } from '../../../api/ApiProduct';
 import { useRouter } from 'next/router';
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -30,13 +30,22 @@ export default function ProductDetailAdmin() {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
-
+    const [selectedImage, setSelectedImage] = useState(null);
     const [form] = Form.useForm();
     const { isLoading, isError, isFetching, data, error } = useQuery(['product', id], () => getProductID(`${id}`),
         {
             enabled: id != undefined
         }
     );
+    const addProductMutation = useMutation(
+        async (payload: any) => await addNewProduct(payload),
+        {
+          onSettled: async (data: any) => {
+            console.log(data)
+            
+          }
+        }
+    )
     
     const handleCancel = () => setPreviewOpen(false);
   
@@ -49,7 +58,12 @@ export default function ProductDetailAdmin() {
       setPreviewOpen(true);
       setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
-  
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const onFinish = (value:any) => {
+        
+        addProductMutation.mutate({...value, image: fileList})
+    }
+    
     const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
       setFileList(newFileList);
   
@@ -59,8 +73,10 @@ export default function ProductDetailAdmin() {
         <div style={{ marginTop: 8 }}>Upload</div>
       </div>
     );
-
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const handleImageChange = (e) => {
+        setSelectedImage(e.target.files[0]);
+      };
+   
     useEffect(()=> {
         if(data) {
             const severImages: string[] = data?.data[0].image.split(";")
@@ -84,7 +100,7 @@ export default function ProductDetailAdmin() {
             form.setFieldsValue(data.data[0])
         }
     }, [data])
-
+    console.log(selectedImage)
   return (
     <div>
         <Head >
@@ -115,7 +131,7 @@ export default function ProductDetailAdmin() {
                     layout= "vertical"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-               
+                    onFinish={onFinish}
                     autoComplete="off"
                     className={cx("form")}
                 >
@@ -199,6 +215,17 @@ export default function ProductDetailAdmin() {
                             >
                             <Input className={cx("form-input")}/>
                         </Form.Item>
+                        <br />
+                        <Form.Item
+                            label="Tags (food/juice) "
+                            name="image"
+                            rules={[{ required: true, message: 'Please input product tag!' }]}
+                            wrapperCol={{ span: 24 }}
+                            className={cx("form-label")}
+                            >
+                            <Input className={cx("form-input")}/>
+                        </Form.Item>
+                            
                         <br />
                         <Form.Item wrapperCol={{ span: 24 }}>
                             <Button className='btn' htmlType="submit">update</Button>

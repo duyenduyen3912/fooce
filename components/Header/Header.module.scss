@@ -150,6 +150,27 @@
     margin-top: 15px;
 }
 
+.menu-responsive{
+    display: none;
+    .menu{
+        .menu-responsive-item{
+            list-style: none;
+            font-size: 15px;
+                padding: 20px;
+            .menu-responsive-link{
+                
+                &:hover{
+                    color: var(--primary) !important;
+                }
+            }
+            &:hover {
+                background-color: #f8f8f8;
+                color: var(--primary) !important;
+            }
+        }
+    }
+}
+
 
 
 

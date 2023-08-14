@@ -1,19 +1,20 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import { Col, Collapse, InputNumber, Rate, Row, Space } from 'antd';
-import Button from "../../components/Button"
+import { Col, Collapse, InputNumber, message, Rate, Row, Button } from 'antd';
 import { Image as ImageAnt } from 'antd'
 import style from "./ProductDetail.module.scss"
 import classNames from 'classnames/bind';
 
 import { DollarCircleOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import Product from '../../components/product';
-import { useQuery } from 'react-query';
-import { getComment, getProductID } from '../../api/ApiProduct';
+import { useMutation, useQuery } from 'react-query';
+import { addProductToCart, getComment, getProductID, IAddProductToCart } from '../../api/ApiProduct';
 import { formatCurrency } from '../../constant/currencyFormatter';
+import ApiUser from '../../api/ApiUser';
 
 const cx = classNames.bind(style)
 export default function ProductDetail(props) {
+    const [quantity,setQuantity] = useState(1)
     const { isLoading, isError, isFetching, data, error } = useQuery(['product', props.id], () => getProductID(`${props.id}`),
         {
             enabled: props.id != undefined
@@ -25,9 +26,33 @@ export default function ProductDetail(props) {
             
         }
     );
+    const addProductMutation = useMutation (
+        async (payload : IAddProductToCart) =>  await addProductToCart (payload), 
+        {
+          onError: () => {
+           
+          },
+          onSettled: async (data:any) => {
+            if(data.status === "success") {
+              console.log(data)
+               message.success('added to cart')
+              
+             } else {
+                message.error('something went wrong, please try again')
+             }
+          }
+        }
+      )
+      
     const severImages: string[] = data?.data[0].image.split(";")
     const image: string[] = severImages || [];
-   
+    const onHandleAddtocart = () => {
+        addProductMutation.mutate({
+          iduser: ApiUser.getIdUser(),
+          idproduct : props.id,
+          quantity : quantity,
+          note: ''
+    })}
  
     return (
         <>
@@ -87,8 +112,12 @@ export default function ProductDetail(props) {
                         {data?.data[0].description}
                     </div>
                     <div className={cx("product-order")}>
-                        <InputNumber min={1} max={10} defaultValue={1} className={cx("input-number")} />
-                        <Button name="add to cart" />
+                        <InputNumber 
+                            onChange={(value)=> setQuantity(value)}
+                            min={1} max={10} 
+                            defaultValue={1}
+                            className={cx("input-number")} />
+                        <Button onClick={onHandleAddtocart} className={cx("order-btn")}>add to cart</Button>
                     </div>
                     <div className={cx("product-infor")}>
                         <div className={cx("infor-wrap")}>

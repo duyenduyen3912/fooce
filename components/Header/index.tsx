@@ -1,4 +1,4 @@
-import { HomeOutlined, SearchOutlined, HeartOutlined, BookOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined, SearchOutlined, HeartOutlined, BookOutlined, ShoppingCartOutlined, UserOutlined, MenuOutlined } from "@ant-design/icons";
 import { Col, Menu, Row } from "antd";
 import style from "./Header.module.scss"
 import classNames from "classnames/bind";
@@ -134,7 +134,44 @@ function Header() {
                         </Link>
                     </li>
                     }
-              
+                    <div className={cx('menu-responsive')}>
+                        <MenuOutlined style={{ fontSize: '24px', color: '#FBBCC0', fontWeight: '600' }}/>
+                        <div className={cx('menu')}>
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/'} className={cx('menu-responsive-link')}>
+                                    Home
+                                </Link>
+                            </li>
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/our-menu'} className={cx('menu-responsive-link')}>
+                                    Menu
+                                </Link>
+                            </li>
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/food'} className={cx('menu-responsive-link')}>
+                                    Food
+                                </Link>
+
+                            </li>
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/juice'} className={cx('menu-responsive-link')}>
+                                    Juice
+                                </Link>
+                            </li>
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/about-us'} className={cx('menu-responsive-link')}>
+                                    About us
+                                </Link>
+                            </li>
+                           
+                            <li className={cx('menu-responsive-item')}>
+                                <Link href={'/my-account'} className={cx('menu-responsive-link')}>
+                                    My account
+                                </Link>
+                            </li>
+                            
+                        </div>
+                    </div>
                 
                
                 

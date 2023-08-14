@@ -1,5 +1,5 @@
 .checkout{
-    padding: 80px 18.333%;
+    padding: 80px 5%;
     text-align: center;
     .checkout-title{
         font-size: 30px;
@@ -10,9 +10,9 @@
     .checkout-form{
         display: flex;
         justify-content: center;
-        
+        width: 100%;
         .form {
-           max-width: 600px;
+           max-width: 100%;
             flex: 1;
             flex-wrap: wrap;
             margin-top: 25px;
@@ -42,4 +42,42 @@
     }
     
     
+}
+
+.cart-total{
+    display: block;
+    .cart-title{
+        font-size: 40px;
+        color: var(--textColor);
+        font-weight: 500;
+        margin-bottom: 31px;
+    }
+    .total-item{
+        border-bottom: 1px solid #d7d7d7;
+        display: flex;
+        padding: 16px 0;
+        .total-title{
+            flex: 2;
+            font-size: 15px;
+            color: var(--textColor);
+            font-weight: 600;
+        }
+
+        .total-infor{
+            flex: 8;
+            color: var(--descriptionTextColor);
+            font-size: 15px;
+            
+            .address{
+                font-weight: 600;
+                color: var(--textColor);
+            }
+            .change-address{
+                cursor: pointer;
+                &:hover{
+                    color: var(--secondary);
+                }
+            }
+        }
+    }
 }

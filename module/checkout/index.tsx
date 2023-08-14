@@ -3,15 +3,22 @@ import React, {useState, useEffect} from 'react'
 import style from './Checkout.module.scss'
 import classNames from 'classnames/bind'
 import PageTitle from '../../components/PageTitle'
-import {Form, Input, Select, Space } from 'antd'
+import {Button, Col, Form, Input, message, Row, Select, Space } from 'antd'
 import ButtonCustom from '../../components/Button'
 import formRules from '../../constant/formRules'
 import axios from 'axios'
+import { DollarOutlined } from '@ant-design/icons'
+import { formatCurrency } from '../../constant/currencyFormatter'
+import { useQueryClient } from 'react-query'
+import { useRouter } from 'next/router'
 
 
 const cx = classNames.bind(style)
 export default function Checkout() {
+  const queryClient = useQueryClient()
+  const router = useRouter()
   const [data, setData] = useState([]);
+  const [subtotal,setSubtotal] = useState(queryClient.getQueryData('subtotal') || 0)
   const districtData = data.map((item) => {
     return item.name;
   })
@@ -25,11 +32,17 @@ export default function Checkout() {
 
   const [wards, setWards] = useState(wardData[districtData[0] as WardName]);
   const [secondWard, setSecondWard] = useState(wardData[districtData[0] as WardName]);
-
+  const [shipPrice, setShipPrice] = useState(0)
 
   const handleProvinceChange = (value: WardName) => {
     setWards(wardData[value]);
     setSecondWard(wardData[value][0]);
+    if(value.toString().includes("Quận")){
+       setShipPrice(15000)
+    } else {
+      setShipPrice(30000)
+    }
+   
   };
 
   const onSecondCityChange = (value: WardName) => {
@@ -56,7 +69,13 @@ export default function Checkout() {
       .catch((error) => {
         console.error('Error fetching districts: ', error);
       });
-    },[])  
+      if(subtotal === 0) {
+        message.info('Checkout time out, please return to cart page', 5)
+        setTimeout(()=>{
+          router.push("/cart");
+      }, 5000)
+      }
+    },[subtotal])  
       
   return (
     <>
@@ -68,81 +87,118 @@ export default function Checkout() {
         <PageTitle name="Checkout" />
         <div className={cx("checkout")}>
                 <div className={cx("checkout-title")}>Billing details</div>
-                <div className={cx("checkout-form")}>
-                <Form
-                    name="basic"
-                    layout= "vertical"
-                  
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
+                <Row className={cx("checkout-form")} justify='space-between' gutter={80}>
+                  <Col span={8} className={`gutter-row ${cx("cart-total")}`} >
                    
-                    initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                    className={cx("form")}
-                >
-                    <Form.Item
-                    label="Name"
-                    name="name"
-                    rules={[{ required: true, message: 'Please input your name!' }]}
-                    className={cx("form-label")}
-                    wrapperCol={{ span: 24 }}
+                    <div className={cx("total-item")}>
+                            <div className={cx("total-title")}>Subtotal</div>
+                            <div className={cx("total-infor")}>
+                                <DollarOutlined style={{fontSize: "15px", color: "#9c9c9c", marginRight: "4px"}} />
+                                {formatCurrency(subtotal)}
+                            </div>
+                    </div>
+                    <div className={cx("total-item")}>
+                            <div className={cx("total-title")}>Shipping	</div>
+                            <div className={cx("total-infor")}>	
+                                <div >
+                                    Flat rate: { " "}
+                                    <DollarOutlined style={{fontSize: "15px", color: "#9c9c9c", marginRight: "4px"}} />
+                                    {formatCurrency(shipPrice)}
+                                </div>
+                                
+                        
+                               
+                            </div>
+                    </div>
+                    <div className={cx("total-item")}>
+                            <div className={cx("total-title")}>Total</div>
+                            <div className={cx("total-infor")}>
+                                <DollarOutlined style={{fontSize: "15px", color: "#9c9c9c", marginRight: "4px"}} />
+                                {formatCurrency(subtotal+shipPrice)}
+                            </div>
+                    </div>
+                        
+                        
+                  </Col>
+                  <Col span={10} className='gutter-row'>
+                    <Form
+                        name="basic"
+                        layout= "vertical"
+                      
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                      
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                        className={cx("form")}
                     >
-                    <Input className={cx("form-input")}/>
-                    </Form.Item>
-                    <br />
-                    <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={formRules.emailRules}
+                        <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[{ required: true, message: 'Please input your name!' }]}
                         className={cx("form-label")}
                         wrapperCol={{ span: 24 }}
-                    >
-                    <Input className={cx("form-input")}/>
-                    </Form.Item>
-                    <br />
-                    <Form.Item
-                        label="Phone"
-                        name="Phone"
-                        rules={formRules.phoneRules}
-                        className={cx("form-label")}
-                        wrapperCol={{ span: 24 }}
-                    >
-                    <Input className={cx("form-input")}/>
-                    </Form.Item>
-                    <br />
-                    <Form.Item
-                        label="Address (Ha Noi city only)"
-                        name="Address"
-                        rules={[{ required: true, message: 'Please input your address!' }]}
-                        className={cx("form-label")}
-                        wrapperCol={{ span: 24 }}
-                    >
-                       <Space 
-                       className={cx("form-space")}
-                       wrap>
-                          <Select
-                            defaultValue={districtData[0]}
-                            style={{ minWidth: 200 }}
-                            onChange={handleProvinceChange}
-                            options={districtData.map((province) => ({ label: province, value: province }))}
-                            
-                          />
-                          <Select
-                          
-                            style={{ minWidth: 200 }}
-                            value={secondWard}
-                            onChange={onSecondCityChange}
-                            options={wards ? wards.map((ward) => ({ label: ward, value: ward })) : []}
-                          />
-                        </Space>
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ span: 24 }}>
-                        <ButtonCustom name= "place order" htmlType="submit" />
-                    </Form.Item>
-                </Form>
-                </div>
+                        >
+                        <Input className={cx("form-input")}/>
+                        </Form.Item>
+                        <br />
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={formRules.emailRules}
+                            className={cx("form-label")}
+                            wrapperCol={{ span: 24 }}
+                        >
+                        <Input className={cx("form-input")}/>
+                        </Form.Item>
+                        <br />
+                        <Form.Item
+                            label="Phone"
+                            name="Phone"
+                            rules={formRules.phoneRules}
+                            className={cx("form-label")}
+                            wrapperCol={{ span: 24 }}
+                        >
+                        <Input className={cx("form-input")}/>
+                        </Form.Item>
+                        <br />
+                        <Form.Item
+                            label="Address (Ha Noi city only)"
+                            name="Address"
+                            rules={[{ required: true, message: 'Please input your address!' }]}
+                            className={cx("form-label")}
+                            wrapperCol={{ span: 24 }}
+                        >
+                          <Space 
+                          className={cx("form-space")}
+                          wrap>
+                              <Select
+                                defaultValue={districtData[0]}
+                                style={{ minWidth: 200 }}
+                                onChange={handleProvinceChange}
+                                options={districtData.map((province) => ({ label: province, value: province }))}
+                                
+                              />
+                              <Select
+                              
+                                style={{ minWidth: 200 }}
+                                value={secondWard}
+                                onChange={onSecondCityChange}
+                                options={wards ? wards.map((ward) => ({ label: ward, value: ward })) : []}
+                              />
+                            </Space>
+                        </Form.Item>
+                        
+                        <Form.Item wrapperCol={{ span: 24 }}>
+                            <Button className='btn' htmlType='submit'>order</Button>
+                        </Form.Item>
+                    </Form>
+                  </Col>
+                  
+                </Row>
+                
         </div>
     </>
     
