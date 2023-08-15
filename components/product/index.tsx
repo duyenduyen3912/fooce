@@ -50,7 +50,7 @@ export default function Product(props) {
 
               <Button 
                 type='primary' 
-                className='animate__animated animate__bounceIn btn'
+                className={`animate__animated animate__bounceIn ${cx("btn")}`}
                 onClick={onHandleAddtocart}  
                 >add to cart</Button>
             </div>

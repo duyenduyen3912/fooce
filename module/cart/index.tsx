@@ -35,6 +35,7 @@ export default function Cart() {
     const queryClient = useQueryClient();
     const [cartList, setCartList] = useState([])
     const [subtotal,setSubtotal] = useState(0)
+    const [totalQuantity,setTotalQuantity] = useState(0)
     const [quantity, setQuantity] = useState(0)
     const { data : cart, refetch} = useQuery(['cart', ApiUser.getIdUser()], () => getProductInCart({iduser: ApiUser.getIdUser() }),
     {
@@ -105,11 +106,15 @@ export default function Cart() {
         const subtotal = cart?.data.reduce((sum,item)=>{
             return sum + parseInt(item.total_quantity,10) * parseInt(item.price,10)
         } ,0)
+        const totalQuantity = cart?.data.reduce((sum,item)=>{
+            return sum + parseInt(item.total_quantity,10) 
+        } ,0)
+        setTotalQuantity(totalQuantity)
         setSubtotal(subtotal)
         setCartList(newCartData)
         refetch()
     }, [cart])
-    console.log(subtotal)
+    console.log(totalQuantity)
     const columns: ColumnsType<DataType> = [
         {
             title: ' ',
@@ -229,6 +234,20 @@ export default function Cart() {
         <PageTitle name="Cart" />
         <div className={cx("cart")}>
             <Table columns={columns} dataSource={cartList} className={cx("cart-table")}/>
+            <div className={cx("total")} style={{textAlign: 'end', padding: '10px 90px', fontSize: "18px", color: "#000", fontWeight: "500"}}>
+                <div className={cx("total-item")}>
+                        <span className={cx("total-name")}>Total quantity:</span>
+                        <span className={cx("total-value")}>{totalQuantity ? formatCurrency(totalQuantity): 0} {" "} items</span>
+                </div>
+                <div className={cx("total-item")}>
+                        <span className={cx("total-name")}> Total price:</span>
+                        <span className={cx("total-value")}>
+                            <DollarOutlined style={{fontSize: '15px', marginRight: "4px"}}/>
+                            {subtotal ? formatCurrency(subtotal) : 0}
+                        </span>
+                </div>
+               
+            </div>
             <div style={{textAlign: 'center'}}>
                 <Link href={'/checkout'}>
                     <Button className='btn' onClick={handleCheckout}>proceed to checkout</Button>

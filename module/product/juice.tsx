@@ -35,6 +35,7 @@ export default function Juice() {
   };
 
   const handlePageChange = (page) => {
+    console.log(page)
     setCurrentPage(page);
   };
 
@@ -65,11 +66,8 @@ export default function Juice() {
   }));
 
   useEffect(()=> {
-    if(data !== undefined) {
-      console.log(data)
-      // const juiceList = JSON.parse(data?.data)
-      // console.log(juiceList)
-      // setJuice(juiceList)
+    if(data) {
+      setJuice(data.data)
     }
       
     
@@ -88,7 +86,10 @@ export default function Juice() {
                 <Col span={17} className="gutter-row">
                   <div className={cx("sort")}>
                         <div className={cx("product-number")}>
-                              Showing 1–9 of 12 results
+                          {
+                            juice.length != 0 ? `Showing ${(currentPage - 1) * 12 + 0 + 1} – ${(currentPage - 1) * 12 + (juice.length) -1 + 1} of ${data?.total_products}  results` : "Dont't have product to show"
+                          }
+                              
                         </div>
                         
                         <Space wrap>
@@ -129,7 +130,7 @@ export default function Juice() {
                       ))}
                       <Pagination
                         current={currentPage}
-                        total={juice?.length} 
+                        total={data?.total_products} 
                         pageSize={9}
                         onChange={handlePageChange}
                         className={cx("pagination")}
