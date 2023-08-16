@@ -4,11 +4,9 @@
 .menu{
     position: relative;
     width: 100%;
-    
     background-size: cover;
-    
     background-repeat: no-repeat;
-    padding:  11% 16%;
+    padding:  11% 12%;
 }
 
 .menu-type{
@@ -96,5 +94,12 @@
 
 
 }
+
+@media only screen and (max-width: 1200px) {
+    .menu {
+        padding: 11% 5%;
+    }
+}
+
 
 

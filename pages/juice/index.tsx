@@ -1,8 +1,8 @@
 import React from 'react'
-import Juice from '../../module/product/juice'
+import ListProduct from '../../module/product/ListProduct'
 
 export default function index() {
   return (
-    <Juice />
+    <ListProduct />
   )
 }

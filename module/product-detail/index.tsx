@@ -186,20 +186,14 @@ export default function ProductDetail(props) {
                                     <Rate style={{ color: "#FBBCC0", fontSize: "13px" }} />
                                     <div className={cx("your-review-title")}>Your Review</div>
                                     <textarea className={cx("your-review-input")} />
-                                    <Button name="submit" />
+                                    <Button className={cx("order-btn")}>submit</Button>
                                 </div>
                             </Collapse.Panel>
                         </Collapse>
                     </div>
                 </Col>
             </Row>
-            <div className={cx("product-suggest")}>
-                <div className={cx("suggest-product")}>Related products</div>
-                <Row gutter={16}>
-                                    
-                </Row>
-
-            </div>
+           
         </>
     )
 }

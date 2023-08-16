@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <div className={cx("footer")}>
       <Row justify="center" gutter={40} className={cx("footer-top")}>
-        <Col span={5}>
+        <Col  xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
           <div className={cx("restaurant")}>
               <div className={cx("restaurant-title")}>
                   Don't be shy, say HI!
@@ -41,7 +41,7 @@ export default function Footer() {
           </div>
           
         </Col>
-        <Col span={5}>
+        <Col  xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
         <div className={cx("open-hours")}>
               <div className={cx("restaurant-title")}>
                   Opening Hours
@@ -83,7 +83,7 @@ export default function Footer() {
               </div>
           </div>
         </Col>
-        <Col span={5}>
+        <Col  xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
           <div className={cx("instagram")}>
               <div className={cx("restaurant-title")}>
                   Instagram

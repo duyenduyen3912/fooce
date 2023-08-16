@@ -53,14 +53,14 @@ export default function MenuType(props) {
 const MenuItem = (props) => {
     return (
       
-            <Col span={12} className={cx("menu-item")} xs={24} sm={24} md={24} lg={12}>
-                <Row gutter={16} className={cx("item-row")}>
-                <Col   span={4}>
-                    <div className={cx("item-image-wrap")}>
+            <Col span={12}  className={cx("menu-item")} xs={24} sm={24} md={24} lg={24} xl={12}>
+                <Row gutter={16} className={cx("item-row")} justify="center">
+                <Col   span={4} xs={24} sm={24} md = {24} lg={4} style={{textAlign: 'center'}}>
+                    <div className={cx("item-image-wrap")} >
                         <Image src={require(`../../assets/imgs/${props.img}.png`)} alt="juice-menu" className={cx("item-image")}/>
                     </div>
                 </Col>
-                <Col span={20}>
+                <Col span={20} xs={24} sm={24} md={24} lg={20}>
                     <div className={cx("item-detail")}>
                         <div className={cx("item-name")}>
                             <span className={cx("name")}> {props.name}</span>

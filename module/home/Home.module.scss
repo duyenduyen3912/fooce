@@ -10,25 +10,10 @@
 
 .carousel{
     position: relative;
-    min-height: 100vh;
+    // min-height: 100vh;
     overflow: hidden;
 }
 
-.border-top{
-    position: absolute;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.border-bottom{
-    position: absolute;
-    bottom: 0;
-    transform: translateY(5px);
-    z-index: 1;
-    overflow: hidden;
-}
 
 .item-wrap{
     // position: relative;
@@ -44,43 +29,7 @@
     height: auto;
 }
 
-.image-text{
-    position: absolute;
-    top: 0;
-    z-index: 1;
-}
 
-
-
-.block-1{
-    top: 14%;
-}
-
-
-.block-2{
-    top: 27%;
-}
-
-.lemon-leaf{
-    left: -3%;
-}
-
-.block-3{
-    top: 43%;
-}
-
-.block-4{
-    top: 55%;
-}
-
-.block-5{
-    top: 70%;
-    left: -5%;
-}
-
-.hight-rate-menu{
-
-}
 
 .logo-wrap{
     text-align: center;
@@ -136,4 +85,15 @@
     
 }
 
+@media only screen and (max-width : 992px) {
+    .hight-rate-menu{
+        padding: 0 0%;
+    }
+}
+
+@media only screen and (max-width : 480px) {
+    .hight-rate-menu{
+        padding: 0 18.3333333%;
+    }
+}
 
