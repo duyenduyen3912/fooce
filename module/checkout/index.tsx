@@ -9,8 +9,10 @@ import formRules from '../../constant/formRules'
 import axios from 'axios'
 import { DollarOutlined } from '@ant-design/icons'
 import { formatCurrency } from '../../constant/currencyFormatter'
-import { useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useRouter } from 'next/router'
+import { deleteProductInCart, order } from '../../api/ApiProduct'
+import ApiUser from '../../api/ApiUser'
 
 
 const cx = classNames.bind(style)
@@ -19,6 +21,9 @@ export default function Checkout() {
   const router = useRouter()
   const [data, setData] = useState([]);
   const [subtotal,setSubtotal] = useState(queryClient.getQueryData('subtotal') || 0)
+  const [shipPrice, setShipPrice] = useState(0)
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [cart,setCart] = useState(queryClient.getQueryData(['cart', ApiUser.getIdUser()]) || 0)
   const districtData = data.map((item) => {
     return item.name;
   })
@@ -32,8 +37,40 @@ export default function Checkout() {
 
   const [wards, setWards] = useState(wardData[districtData[0] as WardName]);
   const [secondWard, setSecondWard] = useState(wardData[districtData[0] as WardName]);
-  const [shipPrice, setShipPrice] = useState(0)
-
+  const deleteMutation = useMutation(
+    async (payload: any) => await deleteProductInCart(payload),
+    {
+      onSuccess: async (data: any) => {
+        
+      }
+    }
+)
+  const orderMutation = useMutation(
+    async (payload:any) => await order(payload), {
+      onSettled: async (data: any) => {
+        console.log(data)
+        if(data.status === "success") {
+          message.success("Your order is successfully", 3)
+          cart.data.map((item)=> {
+            deleteMutation.mutate({
+                iduser: ApiUser.getIdUser().toString(),
+                idproduct: item.idproduct
+            })
+        })  
+        
+        setTimeout(()=> {
+              window.location.replace("/cart")
+          }, 3)
+        } else {
+          message.success("Something went wrong, please try again", 3)
+          setTimeout(()=> {
+              router.push("/cart")
+          }, 3)
+        }
+      }
+    }
+  )
+  console.log(cart)
   const handleProvinceChange = (value: WardName) => {
     setWards(wardData[value]);
     setSecondWard(wardData[value][0]);
@@ -42,6 +79,7 @@ export default function Checkout() {
     } else {
       setShipPrice(30000)
     }
+
    
   };
 
@@ -50,8 +88,14 @@ export default function Checkout() {
   };
   
 
-  const onFinish = (values: any) => {
-      console.log('Success:', values);
+  const onFinish = () => {
+    orderMutation.mutate({
+      iduser: ApiUser.getIdUser(),
+      idproduct: queryClient.getQueryData('product-order'),
+      phone: phoneNumber,
+      address: `${secondWard}, ${wards}, TP. Hà Nội`,
+      totalmoney: subtotal+shipPrice
+    })
     };
     
     const onFinishFailed = (errorInfo: any) => {
@@ -61,6 +105,7 @@ export default function Checkout() {
     const onChange = (value: string[]) => {
       console.log(value)
     }
+
     useEffect(()=>{
       axios.get("https://provinces.open-api.vn/api/?depth=3").then((response) => response.data[0].districts)
       .then((districts) => {
@@ -134,39 +179,20 @@ export default function Checkout() {
                         autoComplete="off"
                         className={cx("form")}
                     >
-                        <Form.Item
-                        label="Name"
-                        name="name"
-                        rules={[{ required: true, message: 'Please input your name!' }]}
-                        className={cx("form-label")}
-                        wrapperCol={{ span: 24 }}
-                        >
-                        <Input className={cx("form-input")}/>
-                        </Form.Item>
-                        <br />
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                            rules={formRules.emailRules}
-                            className={cx("form-label")}
-                            wrapperCol={{ span: 24 }}
-                        >
-                        <Input className={cx("form-input")}/>
-                        </Form.Item>
-                        <br />
+                       
                         <Form.Item
                             label="Phone"
-                            name="Phone"
+                            name="phone"
                             rules={formRules.phoneRules}
                             className={cx("form-label")}
                             wrapperCol={{ span: 24 }}
                         >
-                        <Input className={cx("form-input")}/>
+                        <Input onChange={(e)=> setPhoneNumber(e.target.value)} className={cx("form-input")}/>
                         </Form.Item>
                         <br />
                         <Form.Item
                             label="Address (Ha Noi city only)"
-                            name="Address"
+                        
                             rules={[{ required: true, message: 'Please input your address!' }]}
                             className={cx("form-label")}
                             wrapperCol={{ span: 24 }}
@@ -192,7 +218,7 @@ export default function Checkout() {
                         </Form.Item>
                         
                         <Form.Item wrapperCol={{ span: 24 }}>
-                            <Button className='btn' htmlType='submit'>order</Button>
+                            <Button className={cx('btn')} htmlType='submit'>order</Button>
                         </Form.Item>
                     </Form>
                   </Col>

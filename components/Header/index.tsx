@@ -10,28 +10,44 @@ import { logoutUser } from "../../redux/slices/UserSlice";
 import ApiAdmin from "../../api/ApiAdmin";
 import ApiUser from "../../api/ApiUser";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+import { getProductInCart } from "../../api/ApiProduct";
 const cx = classNames.bind(style)
 
 function Header() {
     const router = useRouter()
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false)
+    const [totalQuantity, setTotalQuantity] = useState(0)
     const onHandleLogout = () =>{
         dispatch(logoutUser())
         router.push("/login")
     } 
+    const { data : cart, refetch} = useQuery(['cart', ApiUser.getIdUser()], () => getProductInCart({iduser: ApiUser.getIdUser() }),
+    {
+        enabled: ApiUser.getIdUser() !== null
+    }
+    );
     const handleOpenMenu = () => {
         if(isOpen) {
             setIsOpen(false)
             document.getElementById('menuResponsive').style.display = 'none'
-            document.getElementById('menuResponsive').cl
         } else {
             setIsOpen(true)
             document.getElementById('menuResponsive').style.display = 'block'
         }
         
     }
+    useEffect(()=> {
+        if(cart?.status === "success") {
+            const totalQuantity = cart?.data.reduce((sum,item)=>{
+                return sum + parseInt(item.total_quantity,10) 
+            } ,0)
+            setTotalQuantity(totalQuantity)
+        }
+    }, [cart])
+
     return (
         <>
         
@@ -109,8 +125,8 @@ function Header() {
                 <li className={cx("menu-item", "icon", "cart")}>
                     <div style={{position: 'relative', minWidth: '35px'}}>
                         <Link href={"/cart"}>
-                        <ShoppingCartOutlined style={{ fontSize: '24px', color: '#FBBCC0', fontWeight: '600', width: '10%' }}/>
-                        <span className={cx('quantity')}>4</span>
+                        <ShoppingCartOutlined style={{ fontSize: '24px', color: '#FBBCC0', fontWeight: '600', width: '10%', minWidth: '24px' }}/>
+                        <span className={cx('quantity')}>{totalQuantity}</span>
                     </Link>
                     </div>
                     

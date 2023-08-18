@@ -52,7 +52,8 @@ const path = {
     deleteProduct: '/DDelete.php',
     deleteProductInCart: '/DCart?action=delete',
     updateProductInCart: '/DCart?action=update',
-    addNewProduct: '/DNewProduct.php'
+    addNewProduct: '/DNewProduct.php',
+    order: '/DOrder?action=order'
 }
 
 export function getProductList(params: ITagListPath): Promise<any> {
@@ -108,4 +109,11 @@ export function addNewProduct(params: any) : Promise<any> {
         Authorization : ApiUser.getAuthToken()
     })
 }
+
+export function order(params: any) : Promise<any> {
+    return sendPost(path.order, params, {
+        Authorization : ApiUser.getAuthToken()
+    })
+}
+
 

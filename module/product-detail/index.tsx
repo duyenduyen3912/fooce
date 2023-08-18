@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 
 import { DollarCircleOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import Product from '../../components/product';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addProductToCart, getComment, getProductID, IAddProductToCart } from '../../api/ApiProduct';
 import { formatCurrency } from '../../constant/currencyFormatter';
 import ApiUser from '../../api/ApiUser';
@@ -15,6 +15,8 @@ import ApiUser from '../../api/ApiUser';
 const cx = classNames.bind(style)
 export default function ProductDetail(props) {
     const [quantity,setQuantity] = useState(1)
+    const queryClient = useQueryClient()
+    const cart = queryClient.getQueryData(['cart', ApiUser.getIdUser()])
     const { isLoading, isError, isFetching, data, error } = useQuery(['product', props.id], () => getProductID(`${props.id}`),
         {
             enabled: props.id != undefined
@@ -36,6 +38,7 @@ export default function ProductDetail(props) {
             if(data.status === "success") {
               console.log(data)
                message.success('added to cart')
+               queryClient.refetchQueries(['cart', ApiUser.getIdUser()])
               
              } else {
                 message.error('something went wrong, please try again')

@@ -7,11 +7,13 @@ import { Button, Col, Rate, Image, message } from 'antd'
 import { DollarOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { formatCurrency } from '../../constant/currencyFormatter'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { addProductToCart, IAddProductToCart } from '../../api/ApiProduct'
 import ApiUser from '../../api/ApiUser'
 const cx = classNames.bind(style)
 export default function Product(props) {
+  const queryClient = useQueryClient()
+  const cart = queryClient.getQueryData(['cart', ApiUser.getIdUser()])
   const imageList: string[] = props.image?.split(";")
   const image: string[] = imageList || [];
   const addProductMutation = useMutation (
@@ -24,6 +26,7 @@ export default function Product(props) {
         if(data.status === "success") {
           console.log(data)
            message.success('added to cart')
+           queryClient.refetchQueries(['cart', ApiUser.getIdUser()])
           
          } else {
             message.error('something went wrong, please try again')

@@ -15,6 +15,7 @@ import Link from 'next/link'
 
 
 
+
 const cx = classNames.bind(style)
 
 interface DataType {
@@ -36,7 +37,8 @@ export default function Cart() {
     const [cartList, setCartList] = useState([])
     const [subtotal,setSubtotal] = useState(0)
     const [totalQuantity,setTotalQuantity] = useState(0)
-    const [quantity, setQuantity] = useState(0)
+    const [productOrder, setProductOrder] = useState('')
+    
     const { data : cart, refetch} = useQuery(['cart', ApiUser.getIdUser()], () => getProductInCart({iduser: ApiUser.getIdUser() }),
     {
         enabled: ApiUser.getIdUser() !== null
@@ -46,7 +48,7 @@ export default function Cart() {
         async (payload: any) => await deleteProductInCart(payload),
         {
           onSuccess: async (data: any) => {
-            console.log(data)
+       
             if(data.status === "success") {
                 message.success("Delete product successfully")
             } else {
@@ -60,9 +62,9 @@ export default function Cart() {
         async (payload: any) => await updateProductInCart(payload),
         {
           onSuccess: async (data: any) => {
-            console.log(data)
-            
+            refetch()
           }
+          
         }
     )
     const confirm = (id) =>{
@@ -74,47 +76,60 @@ export default function Cart() {
     }
     
     const handleChangeQuantity = (id,value) => {
-        setQuantity(value)
+       
         updateMutation.mutate({
             idproduct: id,
             iduser: ApiUser.getIdUser(),
             quantity: value,
             note: ''
         })
-        refetch()
+        
     }
 
     const handleCheckout = () => {
        queryClient.setQueryData('subtotal', subtotal)
+       queryClient.setQueryData('product-order', productOrder)
     }
 
     useEffect(()=> {
-        const newCartData = cart?.data.map((item) => {
-            const serverImage = item.image.split(";")
-
-            return (
-                {
-                    key: item.idproduct,
-                    product: serverImage[0],
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.total_quantity,
-                    subtotal: item.total_price
-                }
-            )
-        })
-        const subtotal = cart?.data.reduce((sum,item)=>{
-            return sum + parseInt(item.total_quantity,10) * parseInt(item.price,10)
-        } ,0)
-        const totalQuantity = cart?.data.reduce((sum,item)=>{
-            return sum + parseInt(item.total_quantity,10) 
-        } ,0)
-        setTotalQuantity(totalQuantity)
-        setSubtotal(subtotal)
-        setCartList(newCartData)
-        refetch()
+        if(cart?.status === "success"){
+            const newCartData = cart?.data.map((item) => {
+                const serverImage = item.image.split(";")
+                return (
+                    {
+                        key: item.idproduct,
+                        product: serverImage[0],
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.total_quantity,
+                        subtotal: item.total_price
+                    }
+                )
+            })
+            const subtotal = cart?.data.reduce((sum,item)=>{
+                return sum + parseInt(item.total_quantity,10) * parseInt(item.price,10)
+            } ,0)
+            const totalQuantity = cart?.data.reduce((sum,item)=>{
+                return sum + parseInt(item.total_quantity,10) 
+            } ,0)
+            const product = cart?.data.map ((item)=> {
+                return `${item.idproduct}-${item.total_quantity}`
+            }) || []
+            if(product.length != 0) {
+                const productOrder = product.join(";")
+                setProductOrder(productOrder)
+            } else {
+                const productOrder = product.join("")
+                setProductOrder(productOrder)
+            }
+            setTotalQuantity(totalQuantity)
+            setSubtotal(subtotal)
+            setCartList(newCartData)
+            refetch()
+        }
+      
     }, [cart])
-    console.log(totalQuantity)
+   
     const columns: ColumnsType<DataType> = [
         {
             title: ' ',
@@ -129,7 +144,7 @@ export default function Cart() {
                             title="Confirm"
                             description="Do you want to remove this product"
                             onConfirm={()=> confirm(record.key)}
-                            onOpenChange={() => console.log(record.key)}
+                           
                         >
                             <CloseOutlined />
                         </Popconfirm>
@@ -223,7 +238,7 @@ export default function Cart() {
             }
         }
     ]
-    console.log(subtotal)
+   
   return (
     <>
          <Head >
@@ -250,7 +265,7 @@ export default function Cart() {
             </div>
             <div style={{textAlign: 'center'}}>
                 <Link href={'/checkout'}>
-                    <Button className='btn' onClick={handleCheckout}>proceed to checkout</Button>
+                    <Button className={cx("btn")} onClick={handleCheckout}>proceed to checkout</Button>
                 </Link>
                 
             </div>

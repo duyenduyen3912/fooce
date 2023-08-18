@@ -8,7 +8,8 @@ import axios from "axios";
 const path = {
     login: "/API.php",
     signup: "/API.php",
-    getUserInfor: "/getUserInfor"
+    getUserInfor: "/getUserInfor",
+    
 
 };
 
