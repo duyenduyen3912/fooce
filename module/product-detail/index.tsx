@@ -54,12 +54,17 @@ export default function ProductDetail() {
     const severImages: string[] = data?.data[0].image.split(";")
     const image: string[] = severImages || [];
     const onHandleAddtocart = () => {
-        addProductMutation.mutate({
-          iduser: ApiUser.getIdUser().toString(),
-          idproduct : id.toString(),
-          quantity : quantity,
-          note: ''
-    })}
+        if(ApiUser.getIdUser()) {
+             addProductMutation.mutate({
+                iduser: ApiUser.getIdUser().toString(),
+                idproduct : id.toString(),
+                quantity : quantity,
+                note: ''
+            })
+        } else {
+            router.push("/login")
+        }
+    }
  
     return (
         <>

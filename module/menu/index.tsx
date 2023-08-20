@@ -1,3 +1,4 @@
+import "../styles/globals.scss";
 import React from 'react'
 import style from "./Menu.module.scss"
 import classNames from 'classnames/bind'

@@ -1,6 +1,4 @@
 import "../styles/globals.scss";
-import Layout from "../module/layout/layout";
-import { useRouter } from "next/router";
 import {QueryClientProvider, QueryClient} from 'react-query'
 import Head from "next/head";
 import Routes from "../router";

@@ -10,9 +10,11 @@ import { formatCurrency } from '../../constant/currencyFormatter'
 import { useMutation, useQueryClient } from 'react-query'
 import { addProductToCart, IAddProductToCart } from '../../api/ApiProduct'
 import ApiUser from '../../api/ApiUser'
+import { useRouter } from 'next/router'
 const cx = classNames.bind(style)
 export default function Product(props) {
   const queryClient = useQueryClient()
+  const router = useRouter()
   const cart = queryClient.getQueryData(['cart', ApiUser.getIdUser()])
   const imageList: string[] = props.image?.split(";")
   const image: string[] = imageList || [];
@@ -35,12 +37,17 @@ export default function Product(props) {
     }
   )
   const onHandleAddtocart = () => {
-    addProductMutation.mutate({
+    if(ApiUser.getIdUser()) {
+      addProductMutation.mutate({
       iduser: ApiUser.getIdUser().toString(),
       idproduct : props.id,
       quantity : 1,
       note: ''
-})
+    })
+    } else {
+      router.push("/login")
+    }
+    
   }
   return (
     <>
