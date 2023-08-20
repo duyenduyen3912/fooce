@@ -13,13 +13,13 @@ export default function Footer() {
         <Col  xs={24} sm={24} md={24} lg={8} xl={8} xxl={8}>
           <div className={cx("restaurant")}>
               <div className={cx("restaurant-title")}>
-                  Don't be shy, say HI!
+                  {"Don't be shy, say HI!"}
               </div>
               <div className={cx("restaurant-infor-wrap")}>
                 <div className={cx("restaurant-infor")}>
                 <PhoneOutlined style={{fontSize: "17px", color: "#fff"}}/>
                 <span className={cx("text")}>	
-                    1-677-124-44227, 1-787-124-445207
+                    {"1-677-124-44227, 1-787-124-445207"}
                 </span>
                 </div>
                 <div className={cx("restaurant-infor")}>
