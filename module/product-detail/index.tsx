@@ -11,20 +11,24 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addProductToCart, getComment, getProductID, IAddProductToCart } from '../../api/ApiProduct';
 import { formatCurrency } from '../../constant/currencyFormatter';
 import ApiUser from '../../api/ApiUser';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(style)
-export default function ProductDetail(props) {
+
+export default function ProductDetail() {
+    const router = useRouter();
+const { id } = router.query;
     const [quantity,setQuantity] = useState(1)
     const queryClient = useQueryClient()
     const cart = queryClient.getQueryData(['cart', ApiUser.getIdUser()])
-    const { isLoading, isError, isFetching, data, error } = useQuery(['product', props.id], () => getProductID(`${props.id}`),
+    const { isLoading, isError, isFetching, data, error } = useQuery(['product', id], () => getProductID(`${id}`),
         {
-            enabled: props.id != undefined
+            enabled: id != undefined
         }
     );
-    const { data: data_cmt } = useQuery(['comment', props.id], () => getComment(`${props.id}`),
+    const { data: data_cmt } = useQuery(['comment', id], () => getComment(`${id}`),
         {
-            enabled: props.id != undefined,
+            enabled: id != undefined,
             
         }
     );
@@ -52,7 +56,7 @@ export default function ProductDetail(props) {
     const onHandleAddtocart = () => {
         addProductMutation.mutate({
           iduser: ApiUser.getIdUser(),
-          idproduct : props.id,
+          idproduct : parseInt(id,10),
           quantity : quantity,
           note: ''
     })}
