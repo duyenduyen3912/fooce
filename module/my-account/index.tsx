@@ -140,7 +140,15 @@ export default function Account() {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={formRules.emailRules}
+                        rules={ [
+                                {
+                                  required: true,
+                                  type: "email",
+                                  message: "The input is not valid E-mail!",
+                                }
+                                
+                              ]
+                            }       
                         className={cx("form-label")}
                         wrapperCol={{ span: 24 }}
                     >

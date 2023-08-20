@@ -17,7 +17,7 @@ const cx = classNames.bind(style)
 
 export default function ProductDetail() {
     const router = useRouter();
-const { id } = router.query;
+    const { id } = router.query;
     const [quantity,setQuantity] = useState(1)
     const queryClient = useQueryClient()
     const cart = queryClient.getQueryData(['cart', ApiUser.getIdUser()])
@@ -55,8 +55,8 @@ const { id } = router.query;
     const image: string[] = severImages || [];
     const onHandleAddtocart = () => {
         addProductMutation.mutate({
-          iduser: ApiUser.getIdUser(),
-          idproduct : parseInt(id,10),
+          iduser: ApiUser.getIdUser().toString(),
+          idproduct : id.toString(),
           quantity : quantity,
           note: ''
     })}

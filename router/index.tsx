@@ -47,15 +47,21 @@ export default function Routes({
     return null;
   };
   
-
+ 
   if (isPrivateRoute()) {
     if (ApiUser.isLogin()) {
       if(router.pathname.includes('/admin')) {
         if(ApiAdmin.getRoleAdmin() === "1") {
           return (
-            <Layout>
+            <>
+          
+              <Layout>
               <Component {...pageProps} />
             </Layout>
+            
+            </>
+            
+            
           )
           
         } else return goToLogin()

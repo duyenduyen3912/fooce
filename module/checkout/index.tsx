@@ -23,7 +23,7 @@ export default function Checkout() {
   const [subtotal,setSubtotal] = useState(queryClient.getQueryData('subtotal') || 0)
   const [shipPrice, setShipPrice] = useState(0)
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [cart,setCart] = useState(queryClient.getQueryData(['cart', ApiUser.getIdUser()]) || 0)
+  const [cart,setCart] = useState(queryClient.getQueryData(['cart', ApiUser.getIdUser()]) || {data : []})
   const districtData = data.map((item) => {
     return item.name;
   })

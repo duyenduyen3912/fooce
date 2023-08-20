@@ -30,8 +30,8 @@ export interface IComment {
 }
 
 export interface IAddProductToCart {
-    iduser: number,
-    idproduct: number,
+    iduser: string,
+    idproduct: string,
     quantity: number,
     note: string
 }

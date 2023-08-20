@@ -1,13 +1,11 @@
 export default {
     emailRules : [
         {
-          type: 'email',
-          message: 'Email address is not valid',
-        },
-        {
           required: true,
-          message: 'Please input your email address!',
-        },
+          type: "email",
+          message: "The input is not valid E-mail!",
+        }
+        
       ],
       phoneRules : [
         {

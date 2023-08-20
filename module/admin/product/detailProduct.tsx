@@ -10,6 +10,7 @@ import style from "../Admin.module.scss"
 import { useMutation, useQuery } from 'react-query';
 import { addNewProduct, getProductID } from '../../../api/ApiProduct';
 import { useRouter } from 'next/router';
+import { UploadFileStatus } from 'antd/lib/upload/interface';
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -79,18 +80,17 @@ export default function ProductDetailAdmin() {
    
     useEffect(()=> {
         if(data) {
-            const severImages: string[] = data?.data[0].image.split(";")
-            const image: string[] = severImages || [];
-            const imageList = image.map((item, index) => 
+            const severImages = data?.data[0].image.split(";")
+            const imageList = severImages.map((item, index) => 
             {
                 const string = item;
                 const lastIndex = string.lastIndexOf('/')
                 const imageName = string.slice(lastIndex+1, item.length)
                 return (
                     {
-                        uid: '-'+ ++index,
+                        uid: '-'+ index, // No need to increment here
                         name: imageName,
-                        status: 'done',
+                        status: 'done' as UploadFileStatus, // Make sure to cast the status to UploadFileStatus
                         url: item
                     }
                 )

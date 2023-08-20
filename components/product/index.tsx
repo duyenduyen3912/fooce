@@ -36,7 +36,7 @@ export default function Product(props) {
   )
   const onHandleAddtocart = () => {
     addProductMutation.mutate({
-      iduser: ApiUser.getIdUser(),
+      iduser: ApiUser.getIdUser().toString(),
       idproduct : props.id,
       quantity : 1,
       note: ''
