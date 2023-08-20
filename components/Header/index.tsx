@@ -58,27 +58,27 @@ function Header() {
                         <Image src={require("../../assets/imgs/Fooce.png")} width={100} alt="logo" />
                     </li>
                     <li className={cx("menu-item")} >
-                        <Link href={"/"} className={cx("menu-item-link")} tabIndex= "0">
+                        <Link href={"/"} className={cx("menu-item-link")} tabIndex= {0}>
                             Home
                         </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <Link href={"/our-menu"} className={cx("menu-item-link")} tabIndex= "0">
+                        <Link href={"/our-menu"} className={cx("menu-item-link")} tabIndex= {0}>
                             Menu
                         </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <Link href={"/food"} className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/food"} className={cx("menu-item-link")} tabIndex= {0}>
                             Food
                         </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <Link href={"/juice"} className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/juice"} className={cx("menu-item-link")} tabIndex= {0}>
                             Juice
                         </Link>
                     </li>
                     <li className={cx("menu-item")}>
-                        <Link href={"/about-us"} className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/about-us"} className={cx("menu-item-link")} tabIndex= {0}>
                             About us
                         </Link>
                     </li>
@@ -87,7 +87,7 @@ function Header() {
                    
                         <div className={`${cx('user')}`}>
                     <li className={cx("menu-item")}>
-                        <Link href={"/admin"} className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/admin"} className={cx("menu-item-link")} tabIndex= {0}>
                             Admin
                         </Link>  
                    </li>
@@ -155,7 +155,7 @@ function Header() {
                     </div>
                     :
                     <li className={cx("menu-item")}>
-                        <Link href={"/login"} className={cx("menu-item-link")} tabIndex = "0">
+                        <Link href={"/login"} className={cx("menu-item-link")} tabIndex= {0}>
                             Login
                         </Link>
                     </li>
