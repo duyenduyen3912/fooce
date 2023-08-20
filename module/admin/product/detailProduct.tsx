@@ -41,7 +41,7 @@ export default function ProductDetailAdmin() {
         async (payload: any) => await addNewProduct(payload),
         {
           onSettled: async (data: any) => {
-            console.log(data)
+            message.success('add new product successfully!')
             
           }
         }
@@ -207,7 +207,7 @@ export default function ProductDetailAdmin() {
                         </Form.Item>
                         <br />
                         <Form.Item
-                            label="Tags (food/juice) "
+                            label="Tags (Food/Juice) "
                             name="tag"
                             rules={[{ required: true, message: 'Please input product tag!' }]}
                             wrapperCol={{ span: 24 }}
@@ -216,19 +216,9 @@ export default function ProductDetailAdmin() {
                             <Input className={cx("form-input")}/>
                         </Form.Item>
                         <br />
-                        <Form.Item
-                            label="Tags (food/juice) "
-                            name="image"
-                            rules={[{ required: true, message: 'Please input product tag!' }]}
-                            wrapperCol={{ span: 24 }}
-                            className={cx("form-label")}
-                            >
-                            <Input className={cx("form-input")}/>
-                        </Form.Item>
-                            
-                        <br />
+                       
                         <Form.Item wrapperCol={{ span: 24 }}>
-                            <Button className='btn' htmlType="submit">update</Button>
+                            <Button className='btn' htmlType="submit">{id ? 'update' : 'add'}</Button>
                         </Form.Item>
                     </Form>
                 </Col>

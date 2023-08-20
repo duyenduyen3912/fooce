@@ -41,17 +41,11 @@
             color: #fff;
             font-size: 15px;
             font-weight: 500;
-            &:hover{
-                color: #fff;
-                border-color: transparent;
-                // background-color: var(--primary);
-            }
+          
         }
         .btn-reset{
             background-color: var(--primary);
-            &:hover{
-                background-color: var(--primary);
-            }
+         
         }
     }
 

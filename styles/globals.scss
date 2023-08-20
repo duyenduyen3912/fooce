@@ -82,7 +82,20 @@ a {
   background-color: #abe9b0 !important; 
 }
 
+.btn{
+   
+  padding: 18px 30px;
+  height: 100%;
+  color: #fff;
+  background-color: var(--primary);
+  font-weight: 500;
+  &:hover{
+      color: #fff !important;
+      border-color: transparent !important;
+      background-color: var(--secondary) !important;
 
+  }
+}
 
 
 

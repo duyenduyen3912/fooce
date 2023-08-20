@@ -18,24 +18,27 @@ function routerProcess(string) {
   return secondCharacter + stringWithoutFirstCharacter;
 }
 
+const _ = require('lodash');
+
 const cx = classNames.bind(style)
 export default function ListProduct() {
   const router = useRouter()
   const path = router.pathname
   const tag = routerProcess(path)
-  console.log(path)
   const [inputValue, setInputValue] = useState(10000);
   const [sortValue, setSortValue] = useState('rating')
   const [currentPage, setCurrentPage] = useState(1);
   const [juice, setJuice] = useState([])
+  const [category, setCategory] = useState([])
+
 
   const handleChange = (value: string) => {
     setSortValue(value)
     if(value === 'low'){
-      const sortedLow = [...juice].sort((a, b) => a.price - b.price);
+      const sortedLow = data?.data.sort((a, b) => a.price - b.price);
       setJuice(sortedLow)
     } else if( value === 'high') {
-      const sortedHigh = [...juice].sort((a, b) => b.price - a.price);
+      const sortedHigh = data?.data.sort((a, b) => b.price - a.price);
       setJuice(sortedHigh)
     } else if (value === 'popularity'){
     } else if(value === 'rating'){
@@ -44,7 +47,7 @@ export default function ListProduct() {
   };
 
   const handlePageChange = (page) => {
-    console.log(page)
+
     setCurrentPage(page);
   };
 
@@ -55,7 +58,7 @@ export default function ListProduct() {
   const handleClickFilter = () => {
     
     const filterJuice = []
-    const filterPrice = [...juice].map((item, index) => {
+    const filterPrice = data?.data.map((item, index) => {
       if(parseInt(item.price, 10) <= inputValue){
         filterJuice.push(item)
       }
@@ -64,10 +67,15 @@ export default function ListProduct() {
     
   }
 
-  const handleClickReset = () => {
-    setJuice(data?.data)
-    setInputValue(10000)
+  const handleChangeCategory = (category) => {
+    const filterCategory = data?.data.filter((item) => {
+      return item.category === category
+    })
+    setJuice(filterCategory)
+   
   }
+
+  
 
   const {isLoading, isError, isFetching, data, error} = useQuery([`${tag}List`, currentPage], () => getProductList({
     tag: tag,
@@ -76,9 +84,14 @@ export default function ListProduct() {
 
   useEffect(()=> {
     if(data) {
-      setJuice(data.data)
-    }
+      if(data.status === "success") {
+        const uniqueCategories = _.uniqBy(data.data.map(item => item.category));
+        setJuice(data.data)
+        setCategory(uniqueCategories)
+      }
       
+    }
+    
     
   }, [data])
 
@@ -96,7 +109,7 @@ export default function ListProduct() {
                   <div className={cx("sort")}>
                         <div className={cx("product-number")}>
                           {
-                            juice.length != 0 ? `Showing ${(currentPage - 1) * 12 + 0 + 1} – ${(currentPage - 1) * 12 + (juice.length) -1 + 1} of ${data?.total_products}  results` : "Dont't have product to show"
+                            juice.length != 0 ? `Showing ${(currentPage - 1) * 12 + 0 + 1} – ${(currentPage - 1) * 12 + (juice.length) -1 + 1} of ${juice.length}  results` : "Dont't have product to show"
                           }
                               
                         </div>
@@ -188,34 +201,23 @@ export default function ListProduct() {
                   
                   <div className={cx('price-range-btn')}>
                     <Button className={cx('btn')} onClick= {handleClickFilter}>filter</Button>
-                    <Button className={cx('btn', 'btn-reset')} onClick= {handleClickReset}>reset</Button>
+                    
                   </div>
                   </div>
                 <div className={cx('product-category')}>
                   <div className={cx('filter-price')}>
                     Product categories
                   </div>
-                    <div className={cx('category-item')}>
-                        Colorful
-                    </div>
-                    <div className={cx('category-item')}>
-                        Fruit Bowl
-                    </div>
-                    <div className={cx('category-item')}>
-                        Healthy
-                    </div>
-                    <div className={cx('category-item')}>
-                        Ice Cream
-                    </div>
-                    <div className={cx('category-item')}>
-                        Mixed
-                    </div>
-                    <div className={cx('category-item')}>
-                        Smoothie
-                    </div>
-                    <div className={cx('category-item')}>
-                        Shakes
-                    </div>
+                    
+                    {
+                      category.map((item,index)=> {
+                        return (
+                          <div className={cx('category-item')} key={index} onClick={() => handleChangeCategory(item)}>
+                            {item}
+                          </div>
+                        )
+                      })
+                    }
                 </div>
                 <div className={cx('product-search')}>
                   <Input size="large" placeholder="search product..." prefix={<SearchOutlined style={{color: '#abe9b0', fontWeight: '600', fontSize: '17px' }}/>} className={cx("search-input")}/>

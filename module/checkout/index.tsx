@@ -50,19 +50,18 @@ export default function Checkout() {
       onSettled: async (data: any) => {
         console.log(data)
         if(data.status === "success") {
-          message.success("Your order is successfully", 3)
-          cart.data.map((item)=> {
+          await cart.data.map((item)=> {
             deleteMutation.mutate({
                 iduser: ApiUser.getIdUser().toString(),
                 idproduct: item.idproduct
             })
-        })  
-        
+          })  
+        message.success("Your order is successfully", 3)
         setTimeout(()=> {
               window.location.replace("/cart")
           }, 3)
         } else {
-          message.success("Something went wrong, please try again", 3)
+          message.error("Something went wrong, please try again", 3)
           setTimeout(()=> {
               router.push("/cart")
           }, 3)

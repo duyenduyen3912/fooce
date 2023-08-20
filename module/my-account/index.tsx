@@ -207,10 +207,6 @@ export default function Account() {
                     </Form>
                 </>
             )
-        },
-        {
-            key: '4',
-            label: (<span className={cx("tab-header")}>Logout</span>),
         }
     ]
   return (

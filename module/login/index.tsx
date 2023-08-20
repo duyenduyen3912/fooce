@@ -135,7 +135,7 @@ function Login() {
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ span: 24 }}>
-                <Button className= "btn" htmlType='submit' >login</Button>
+                <Button className= {cx("btn")} htmlType='submit' >login</Button>
                 </Form.Item>
             </Form>
           ),
@@ -230,7 +230,7 @@ function Login() {
             
 
             <Form.Item wrapperCol={{ span: 24 }}>
-                <ButtonCustom name= "signup" htmlType="submit" />
+                <Button className={cx("btn")} htmlType="submit">signup</Button>
             </Form.Item>
         </Form>),
         }
