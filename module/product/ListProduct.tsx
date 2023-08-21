@@ -105,7 +105,7 @@ export default function ListProduct() {
         <PageTitle name= {tag} />
         <div className={cx("product")}>
             <Row justify={'space-between'}>
-                <Col span={17} className="gutter-row">
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={17} className="gutter-row">
                   <div className={cx("sort")}>
                         <div className={cx("product-number")}>
                           {
@@ -167,7 +167,7 @@ export default function ListProduct() {
                   </Row>
                   
                 </Col>
-                <Col span={6} className="gutter-row">
+                <Col  xs={24} sm={24} md={24} lg={24} xl={24} xxl={6} className="gutter-row">
                 <div className={cx('filter-price')}>
                   Filter by price
                 </div>
