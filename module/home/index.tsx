@@ -9,7 +9,7 @@ import Product from "../../components/product";
 import MenuType from "../../components/Menu";
 import image from "../../constant/img/image";
 import { useQuery } from "react-query";
-import { getAllProduct, getProductInCart } from "../../api/ApiProduct";
+import { getAllProduct, getProductInCart, getProductList } from "../../api/ApiProduct";
 import Loading from "../../components/loading";
 import ApiUser from "../../api/ApiUser";
 
@@ -19,22 +19,21 @@ function Homepage() {
     const inView = true;
     const [juice, setJuice] = useState([])
     const [food, setFood] = useState([])
-    const { isLoading, data } = useQuery(['getAllProduct' ],() =>  getAllProduct('1') )
-   
-
+    const {data: juiceData} = useQuery([`JuiceList`], () => getProductList({
+        tag: "Juice",
+        indexPage: "1"
+      }));
+    const {data: foodData} = useQuery([`FoodList`], () => getProductList({
+        tag: "Food",
+        indexPage: "1"
+    }));
     useEffect(()=>{
-        data?.data.map((item, index) => {
-            
-            if(item.tag.includes("Juice")) {
-                setJuice((prev) => [...prev, item])
-                
-            } else if(item.tag.includes("Food")){
-                setFood((prev) => [...prev, item])
-            }
-        })
-       
-    },[data])
- 
+        if(juiceData?.data.status === "success" || foodData?.data.status === "success")
+            setJuice(juiceData)
+            setFood(foodData)
+    },[juiceData,foodData])
+    console.log(juiceData)
+    console.log(foodData)
     return (
        
        <div className={cx("homepage")}>
@@ -81,11 +80,8 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                    {
-                        juice.map((item,index) => {
-                            
-                            if(index <= 11) {
-
+                    {juiceData?.status === "success" ? 
+                        juiceData?.data.map((item,index) => {
                                 return (
                                     <Product 
                                         key={item.id}
@@ -99,7 +95,8 @@ function Homepage() {
                                 )
                             }
                             
-                        })
+                        )
+                        : null
                     }
                 </Row>
                 </div>
@@ -116,11 +113,11 @@ function Homepage() {
                 </div>
                 <div className={cx("product-wrap")}>
                 <Row gutter={16}>
-                    {
-                        food.map((item,index) => {
-                            if(index <= 8) {
+                    {foodData?.status === "success" ? 
+                        foodData?.data.map((item,index) => {
                                 return (
                                     <Product 
+                                        key={item.id}
                                         col={6}
                                         name={item.name} 
                                         image = {item.image}
@@ -129,8 +126,10 @@ function Homepage() {
                                         price = {item.price}
                                     />
                                 )
-                            }  
-                        })
+                            }
+                            
+                        )
+                        : null
                     }
                 </Row>
                 </div>
