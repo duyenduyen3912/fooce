@@ -74,7 +74,7 @@ export default function ProductDetail() {
                 <link rel="icon" href="/icon.png" />
             </Head>
             <Row justify={"center"} className={cx("product-detail")} gutter={80} >
-                <Col span={8} className="gutter-row">
+                <Col  xs={24} sm={24} md={24} lg={24} xl={12} xxl={8} className="gutter-row">
                     <div className={cx("product-gallery")}>
 
                         <div className={cx("product-img-wrap")}>
@@ -107,7 +107,7 @@ export default function ProductDetail() {
 
 
                 </Col>
-                <Col span={8} className="gutter-row">
+                <Col  xs={24} sm={24} md={24} lg={24} xl={12} xxl={8} className="gutter-row">
                     <div className={cx("product-name")}>
                         {data?.data[0].name}
                     </div>
