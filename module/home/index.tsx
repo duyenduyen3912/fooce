@@ -32,8 +32,7 @@ function Homepage() {
             setJuice(juiceData)
             setFood(foodData)
     },[juiceData,foodData])
-    console.log(juiceData)
-    console.log(foodData)
+   
     return (
        
        <div className={cx("homepage")}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../module/layout/layout";
 import RouteList, {IRoute} from "./RouteList";
 import {AppProps} from "next/app";
@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../redux/slices/UserSlice";
 import { message } from "antd";
 import ApiAdmin from "../api/ApiAdmin";
+import Loading from "../components/loading";
 
 export default function Routes({
   Component,
@@ -16,9 +17,7 @@ export default function Routes({
   router
  
 }: AppProps): JSX.Element | null {
- 
-
-  
+  const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
   const isPrivateRoute = (): boolean | undefined => {
     for (const route of RouteList) {
@@ -47,29 +46,32 @@ export default function Routes({
     return null;
   };
   
- 
+  useEffect(()=> {
+    setTimeout(()=> {
+      setIsLoading(false)
+    },5000)
+  },[])
+  if(isLoading) return <Loading />
   if (isPrivateRoute()) {
     if (ApiUser.isLogin()) {
       if(router.pathname.includes('/admin')) {
         if(ApiAdmin.getRoleAdmin() === "1") {
           return (
             <>
-          
               <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            
+                <Component {...pageProps} />
+              </Layout>
             </>
-            
-            
           )
           
         } else return goToLogin()
       } else {
          return (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+          </>
       );
       }
      
